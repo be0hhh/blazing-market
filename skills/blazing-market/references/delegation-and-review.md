@@ -3,6 +3,8 @@
 This is the portable agent-orchestration contract. It applies through the
 agent platform's actual capabilities; it does not require a particular model,
 agent filename, multi-agent API, token tier or orchestration service.
+Explicit project rules replace corresponding workflow rules here; apply the
+skill where they leave gaps, without calling overridden stages incomplete.
 
 ## Contents
 
@@ -115,9 +117,10 @@ flowchart TD
 This depicts responsibilities and authorization boundaries, not automatic
 execution. Verification follows the authority rules in
 [workflow-and-plans.md](workflow-and-plans.md); an independent code review is
-not a test or performance benchmark. Small direct tasks bypass the full cascade
-and fresh-plan-review ceremony. Simplicity stages apply to substantive code
-tasks; unavailable independent stages are reported as incomplete.
+not a test or performance benchmark. Small direct tasks bypass the full cascade;
+high-risk plans still receive fresh independent plan review, without requiring
+a separate designer merely for risk. Simplicity stages apply to substantive
+code tasks; report unavailable applicable stages without simulating clearance.
 
 ## Questions and handoffs
 
@@ -170,8 +173,8 @@ explicit pause, cancellation or scope change does.
    benchmarks, runtime and live checks retain their distinct evidence and
    authorization under the active user/project/runtime policy.
 
-If a separate designer or independent reviewer cannot be provided, report
-which stage is unavailable. Continue independent authorized work without
+If an applicable separate designer or independent reviewer cannot be provided,
+report which stage is unavailable. Continue independent authorized work without
 claiming that self-review satisfies the missing independent stage; material
 unresolved decisions still stop dependent implementation.
 
@@ -270,8 +273,9 @@ reuse prior validated findings instead of restarting discovery.
   continue independent authorized work. Simplicity never replaces domain or
   latency review; material repairs to a critical surface repeat its affected
   specialist reviews before the final simplicity review.
-- Select required critical reviewers from the matrix below. Network latency
-  and transport correctness are independent roles; one cannot satisfy both.
+- Select required critical reviewers from the matrix below. For the required
+  network H0/H1 trio, network latency and transport correctness are independent
+  roles; one cannot satisfy both.
 - Critical reviewers must be independent of the author and inspect the final
   relevant source; report CLEAR or findings with severity, exact path/symbol,
   violated invariant, observed evidence and limits. A reviewer cannot grant
@@ -292,13 +296,22 @@ reuse prior validated findings instead of restarting discovery.
 ## Critical review matrix
 
 Apply by actual changed behavior, including configuration that changes that
-behavior. The network row takes precedence over the ordinary H0/H1 pair.
+behavior. The network H0/H1 row takes precedence over the ordinary H0/H1 pair.
 
 | Changed surface | Minimum independent final reviewers |
 | --- | --- |
 | Actual non-network H0/H1 | Computation/memory latency + relevant parser, runtime, execution or other domain specialist |
-| Any actual network change, including entirely C lifecycle work such as DNS, connect, TLS setup or reconnect | Computation/memory latency + network latency + transport correctness: **three distinct threads** |
-| Substantive offline financial computation under an explicit H0 contract | Computation/memory latency + quant/financial semantics |
+| Actual network change affecting H0/H1 | Computation/memory latency + network latency + transport correctness: **three distinct threads** |
+| Pure C/D network change with no hot-path effect | Expertise selected by concrete risk; no fixed reviewer quota |
+| Substantive offline financial computation under an explicitly required strict compute contract | Computation/memory latency + quant/financial semantics |
+
+Before using the pure C/D row, bound the inspection to affected callers,
+shared code, configuration and contracts to establish that hot RX/TX behavior,
+parameters consumed by H0/H1 and H0/H1 semantics are unaffected. Trading depending
+on connection readiness alone is not a hot-path effect. Changes affecting those
+hot operations or contracts require the trio even if edited in setup code. If uncertain, do not claim
+the cold exemption: investigate and route material uncertainty through root
+under the existing decision rules.
 
 Add independent parser, runtime/execution or quant review when a network change
 also changes substantial separate semantic invariants; the network trio does

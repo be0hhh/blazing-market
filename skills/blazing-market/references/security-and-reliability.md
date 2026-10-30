@@ -28,9 +28,11 @@
 - Authenticate IPC peers where trust boundaries require it; validate message
   size, schema/layout, identity, epoch/generation and owner before consuming
   a request or issuing a privileged operation.
-- Keep read-only views physically and transitively separate from mutation,
-  account, session and order-control capabilities. A UI, viewer, recorder or
-  monitoring agent must not become another owner of trading authority.
+- Read-only views must lack mutation, order and session-control capabilities,
+  including through transitive dependencies. Choose the enforcement mechanism
+  for the architecture; preserve explicitly stricter project physical
+  boundaries. A UI, viewer, recorder or monitoring agent must not become
+  another owner of trading authority.
 - Check the entire dependency/capability closure, not only a direct import.
   A helper can accidentally introduce the forbidden capability transitively.
 - Use appropriate file/socket permissions and clear provenance for snapshots,

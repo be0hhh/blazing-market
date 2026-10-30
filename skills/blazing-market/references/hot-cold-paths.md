@@ -32,7 +32,8 @@ name, subsystem label, or an isolated function benchmark.
 Computation/memory latency and network latency are separate review capabilities.
 Use [transport-and-readiness.md](transport-and-readiness.md) for RX/TX and Linux
 system context, and the [critical review matrix](delegation-and-review.md#critical-review-matrix)
-for required independent reviewers, including network changes classified C.
+for required independent reviewers: the trio applies to actual network H0/H1
+changes; pure C/D expertise follows concrete risk and bounded hot-impact inspection.
 
 - On the proven path inspect dynamic allocation/growth, exception/error paths,
   virtual/indirect dispatch, locks, syscalls, sleeps, I/O, logging/formatting,
@@ -41,8 +42,10 @@ for required independent reviewers, including network changes classified C.
   than issuing a blanket language-independent ban.
 - Inspect queues and rings: producer/consumer ownership, capacity, pressure,
   memory ordering, false sharing, fairness, backlog, drop/overflow signal and
-  bounded drain. Prevent publication of available market data from waiting
-  only for a batch to fill; a batch limit may guard fairness.
+  bounded drain. On a hot low-latency path, publish available market data
+  immediately without waiting to fill a batch; limits may guard fairness.
+  Outside that path, batching requires explicitly agreed size, time and
+  overload bounds.
 - Inspect state size and locality (`sizeof`/alignment, cache lines, stack,
   prefetch/SIMD if relevant), branch-prediction hints and atomic contention.
   Hints and micro-optimizations are candidates until actual bias and cost are
@@ -62,5 +65,7 @@ for required independent reviewers, including network changes classified C.
   improvement, not automatically lower steady-state tick-to-consumer latency.
 - Do not confuse an isolated function benchmark with full-route improvement.
   State what portion of the active chain was actually exercised.
-- Load [ultra-low-latency-profile.md](ultra-low-latency-profile.md) only if the
-  user's/project's explicit profile requires the strict bans.
+- Apply [ultra-low-latency-profile.md](ultra-low-latency-profile.md) to hot
+  operations when user/project explicitly identifies the market/trading system
+  as LOW LATENCY, or explicitly selects that profile. H0, market data or “fast”
+  alone is insufficient; clarify unclear intent and preserve project scope.

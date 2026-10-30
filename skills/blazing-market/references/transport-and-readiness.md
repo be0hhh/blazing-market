@@ -20,8 +20,10 @@ queue/core affinity and CPU/NUMA locality when relevant evidence is available.
 Transport correctness remains a separate review of trust, framing, partial I/O,
 deadlines and session recovery. Placement expertise establishes endpoint or
 location claims; it does not substitute for socket/kernel/NIC analysis. Use the
-[critical review matrix](delegation-and-review.md#critical-review-matrix) even
-for network changes confined to cold/control lifecycle work.
+[critical review matrix](delegation-and-review.md#critical-review-matrix): actual
+network H0/H1 changes require the independent trio; pure C/D work selects
+expertise by concrete risk after the matrix's bounded inspection establishes
+no hot RX/TX effect. Investigate uncertainty before claiming the cold exemption.
 
 ## Linux system context and passive observations
 

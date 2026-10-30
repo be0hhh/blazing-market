@@ -25,8 +25,9 @@
 - Bound every parse cursor, field length, decode depth, escape, element count,
   frame/decompression capacity and write extent. Specify malformed/partial
   input behavior, parsing failure and overflow without data invention.
-- For explicit strict-hot profiles, prefer borrowed spans/views with proved
-  lifetimes, prepared storage, known-field scanning and bounded binary cursors.
+- For hot operations covered by the [strict profile](ultra-low-latency-profile.md),
+  prefer borrowed spans/views with proved lifetimes, prepared storage,
+  known-field scanning and bounded binary cursors.
   Do not force one language's parser library prohibition onto other runtimes.
 
 ## Public versus private capacity

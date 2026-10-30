@@ -45,6 +45,8 @@ introduce networking, compression, telemetry or a GUI into every project.
 - Separate per-instance and aggregate metrics, missing versus zero samples,
   timestamp definitions, replay/synthetic versus live data provenance, and
   actually observed versus estimated latency.
-- Keep a viewer or projection read-only by design and transitive dependency.
+- Keep a viewer or projection free of mutation, order and session-control
+  capabilities, including through transitive dependencies. Choose enforcement
+  for the architecture and preserve stricter project physical boundaries.
   A slow GUI, browser worker, context loss or log consumer must not create
   uncontrolled backpressure in the market-data producer.

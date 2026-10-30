@@ -1,11 +1,13 @@
 # Blazing Market
 
-**Engineering practices for crypto and other financial-market software.**
+**Engineering practices for market-data, trading and low-latency financial systems.**
 
 An open-source [Agent Skill](https://agentskills.io/) for analyzing, reviewing,
 designing and developing market-data pipelines, trading systems and financial
 calculations. It brings hot/cold-path discipline, bounded resources, explicit
 ownership and independent review to your coding agent, in any language.
+Project rules take precedence; hot-path obligations are distinguished from
+cold/control work, with strict constraints for explicitly low-latency systems.
 
 [Quick start](#quick-start) · [Engineering practices](#engineering-practices) ·
 [Workflow](#workflow-by-complexity-and-risk) · [Recursive delegation](#recursive-delegation) ·
@@ -73,11 +75,13 @@ Classify work by what it actually does:
 | **C** | Cold/control work: configuration, connection setup, authentication and recovery |
 | **D** | Deep diagnostics: traces, reports, dashboards and viewers |
 
-Bounded ownership and correct behavior apply throughout. The optional
+Bounded ownership and correct behavior apply throughout. The
 [ultra-low-latency profile](skills/blazing-market/references/ultra-low-latency-profile.md)
-adds strict no-allocation, no-floating-point and other H0 restrictions when
-selected by the user or project. An existing strict project policy stays active;
-the skill does not silently impose that profile on every language or workload.
+adds strict no-allocation, no-floating-point and other restrictions to hot
+operations when user/project explicitly identifies the market/trading system
+as LOW LATENCY, or explicitly selects the profile. An HFT label is unnecessary;
+H0, market data or “fast” alone is insufficient. Project policy controls scope;
+offline computation needs an explicit additional strict requirement.
 
 ## Workflow by complexity and risk
 
@@ -94,12 +98,14 @@ flowchart TD
     RISK -->|"Small / low risk"| SMALL["Inspect owner and callers; early simplicity review if required"]
     RISK -->|"Moderate"| MEARLY["Early simplicity review when required"]
     MEARLY --> MEDIUM["In-chat plan and scoped helpers if useful"]
-    RISK -->|"Complex / high risk"| RESEARCH["Read-only research"]
+    RISK -->|"Small / high risk"| HPLAN["Early simplicity if required; decision-complete in-chat plan"]
+    HPLAN --> PLANREVIEW
+    RISK -->|"Complex"| RESEARCH["Read-only research"]
     RESEARCH --> ROOT["Root considers findings"]
     ROOT --> HEARLY["Early simplicity review when required"]
     HEARLY --> DESIGN["Separate designer prepares the solution"]
     DESIGN --> PLANREVIEW["Fresh independent plan review"]
-    PLANREVIEW --> AGREE["Root resolves questions and obtains user agreement"]
+    PLANREVIEW --> AGREE["Root settles decisions and required user agreement"]
 
     SMALL --> AUTH{"Implementation authorized?"}
     MEDIUM --> AUTH
@@ -116,14 +122,17 @@ flowchart TD
 ```
 
 - **Small tasks stay small.** No full cascade, durable plan or arbitrary agent quota.
+  High risk still requires fresh independent plan review; it does not by itself
+  require a separate designer.
 - **Substantive code work receives early and final simplicity review** when
   independent agents are available. Final simplicity review follows the relevant
   specialist reviews; tiny mechanical edits do not require these consultations.
 - **Critical changes follow the canonical
   [review matrix](skills/blazing-market/references/delegation-and-review.md#critical-review-matrix).**
-  Network latency and transport correctness are separate reviews, including
-  changes confined to cold connection/recovery work; substantive offline finance
-  retains its computation/memory latency and quant review.
+  Actual network H0/H1 changes require three independent computation/memory,
+  network latency and transport reviews. Pure C/D networking selects expertise
+  by concrete risk after bounded inspection establishes no hot-path effect;
+  selected strict offline finance retains its latency and quant pair.
 - **Material questions return to the user through root.** Changed behavior or
   failure policy is settled before dependent work. An unchanged agreed plan and
   active execution permission need no renewed approval.
@@ -180,8 +189,10 @@ runtime, browser, model, performance and live evidence separately, with the
 actual exercised scope and results. Missing evidence remains visible.
 
 The user's instructions, project rules and runtime restrictions govern edits
-and checks. The skill adds no approval ritual for ordinary tests already covered
-by that policy. A plan, hook or worker cannot grant additional authority;
+and checks. Explicit project rules replace corresponding skill workflow rules;
+the skill fills gaps, and overridden stages are not incomplete. The skill adds
+no approval ritual for ordinary tests already covered by that policy. A plan,
+hook or worker cannot grant additional authority;
 external and account/order actions retain their applicable permission boundaries.
 
 Linux system-context guidance distinguishes local/WSL/VM observations from the

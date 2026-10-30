@@ -48,6 +48,8 @@
 The active user's instructions, project rules and runtime restrictions govern
 authorization. This section is the bundle's common authority reference; it
 does not impose a separate approval ritual for ordinary tests or builds.
+Explicit project rules replace corresponding skill workflow rules; the skill
+fills gaps. An overridden stage is not an incomplete required stage.
 
 - **Study/diagnose/review/status:** read-only. No source or plan-state edits.
 - **Plan:** write selected plan artifacts only when permitted by the user and

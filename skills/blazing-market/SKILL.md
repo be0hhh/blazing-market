@@ -1,6 +1,6 @@
 ---
 name: blazing-market
-description: Analyze, review, design, and develop software for crypto and other financial markets in any language. Use for market-data feeds and parsers, hot/cold paths, network latency, trading and order execution, financial calculations, session recovery, and evidence-based performance work. Includes scoped agent delegation and independent review for complex market-software tasks.
+description: Analyze, review, design, and develop crypto and financial-market software in any language: market-data feeds/parsers, hot/cold paths, network latency, trading/order execution, financial calculations, session recovery and evidence-based performance. Includes scoped delegation and independent review for complex tasks.
 ---
 
 # Blazing Market
@@ -9,6 +9,8 @@ Apply the existing project's rules, the user's actual task and permissions, and
 these portable engineering contracts. Do not assume a particular language,
 exchange, build system, runtime, orchestration tool, trading model, or latency
 target. The skill is an audit and implementation guide, not an authority grant.
+Explicit project rules replace corresponding skill workflow rules; the skill
+fills gaps. Do not report an overridden stage as incomplete.
 
 ## Route bounded context
 
@@ -35,7 +37,7 @@ target. The skill is an audit and implementation guide, not an authority grant.
 | Code changes, permissions, checks, plans and completion | [workflow-and-plans.md](references/workflow-and-plans.md) |
 | Substantive code work, complex or high-risk work, agent delegation, simplicity or specialist review | [delegation-and-review.md](references/delegation-and-review.md) |
 | Network placement, compression, recording, diagnostics or UI | [specialized-surfaces.md](references/specialized-surfaces.md) |
-| Explicit ultra-low-latency or no-heap/no-floating-point H0 contract | [ultra-low-latency-profile.md](references/ultra-low-latency-profile.md) |
+| Explicit LOW LATENCY market/trading system, selected strict profile or strict compute contract | [ultra-low-latency-profile.md](references/ultra-low-latency-profile.md) |
 | Significant findings, code-review report or handoff | [report-contract.md](references/report-contract.md) |
 
 ## Core workflow
@@ -61,10 +63,12 @@ target. The skill is an audit and implementation guide, not an authority grant.
    only on the proven path. Seek an existing owner and suitable implementation
    before introducing a helper, abstraction or parallel implementation.
 5. **Apply the selected constraint profile.** Bounded ownership, semantic
-   correctness and truthful evidence always apply. Hard no-heap/no-float/
-   no-virtual/no-RTTI restrictions apply when the user or project selects the
-   [ultra-low-latency profile](references/ultra-low-latency-profile.md), not
-   silently to every Java, Go, Rust, C++, C#, or other runtime.
+   correctness and truthful evidence always apply. The
+   [ultra-low-latency profile](references/ultra-low-latency-profile.md) applies
+   to hot operations when user/project explicitly identifies the market/trading
+   system as LOW LATENCY, or explicitly selects that profile. H0 labels, market
+   data or “fast” alone do not select it; clarify unclear intent. Project policy
+   controls scope; offline strict computation needs an explicit extra requirement.
 6. **Respect task authority.** Follow the active user/project/runtime policy in
    [workflow-and-plans.md](references/workflow-and-plans.md). Study/review is
    read-only; a plan or worker naming a command grants no permission. This
@@ -86,9 +90,9 @@ target. The skill is an audit and implementation guide, not an authority grant.
   including its separate network latency and transport correctness roles.
   Review integrated code; report unavailable reviews without simulating them.
 - For risky cross-boundary design, settle behavior, failure semantics, ownership,
-  and acceptance with the user before dependent edits. For a high-risk or full
-  cascade plan, request a fresh independent plan review before user agreement
-  when available. A small task needs no full cascade or durable file.
+  and acceptance with the user before dependent edits. For a high-risk or
+  non-trivial full-cascade plan, request a fresh independent plan review before
+  user agreement when available. A small task needs no full cascade or durable file.
 - For a complex full cascade, research returns to root before a separate
   designer starts. Obtain user agreement on the ready solution before first
   implementation; an unchanged agreed plan needs no renewed approval.

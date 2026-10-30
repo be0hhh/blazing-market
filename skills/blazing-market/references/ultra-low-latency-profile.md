@@ -1,10 +1,15 @@
 # Ultra-low-latency profile: strict H0 contract
 
-This profile preserves the strong low-level engineering restrictions used by
-the originating system. It is **opt-in**: apply its vetoes when the project or
-user explicitly selects an ultra-low-latency/H0 contract, not automatically
-to every language, runtime, target or latency budget. Do not weaken a project's
-already active stricter policy merely because Blazing Market is portable.
+This profile preserves the existing strict low-level engineering restrictions.
+Apply it to hot operations when the project or user explicitly identifies the
+market/trading system as LOW LATENCY, or explicitly selects the strict profile.
+No HFT label is needed. H0, market data or “fast” alone is insufficient; ask
+when intent is unclear. Explicit project policy controls the corresponding
+rules and scope; preserve an already active stricter contract.
+
+H0 follows the bans below. H1 follows them for operations actually on the
+critical path or covered by an explicitly selected strict compute contract;
+remaining H1 retains its boundedness, lifetime and ownership class contract.
 
 ## H0 computation and live event loop
 
@@ -51,8 +56,10 @@ already active stricter policy merely because Blazing Market is portable.
 
 ## Offline computation under the same strict contract
 
-A project may explicitly apply the same no-allocation, no-float, bounded-work,
-no-lock and no-diagnostic restrictions to an offline finance/planning solver.
+Offline solvers, backtests and finance require an explicit additional project
+or user requirement to apply the same no-allocation, no-float, bounded-work,
+no-lock and no-diagnostic restrictions; the live system's selection alone
+does not extend them to offline work.
 Check scenario/state/stack bounds, integer arithmetic, overflow/refusal and
 event application without pretending that offline linkage proves H0 live
 latency or trading readiness. Diagnostics and independent oracles stay outside
@@ -60,9 +67,13 @@ the strict computational core.
 
 ## Strict veto and proof
 
-For an actual selected strict H0/H1 change, block concrete allocation,
+For an actual change covered by the selected strict scope, block concrete allocation,
 blocking, floating-point, unbounded parse/work, hidden compatibility fallback,
 silent stale/gap recovery, wrong-order publication, or data-lifetime violations.
+For existing heap, floating-point or virtual-dispatch violations, report the
+exact divergence and its impact on the task. Do not silently expand the task
+into arithmetic, API or architecture changes to repair pre-existing violations;
+route material scope decisions through root under the existing rules.
 Select independent reviewers from the
 [critical review matrix](delegation-and-review.md#critical-review-matrix),
 including the network trio where applicable.
