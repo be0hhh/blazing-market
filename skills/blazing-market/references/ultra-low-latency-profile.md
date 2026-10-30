@@ -63,6 +63,8 @@ the strict computational core.
 For an actual selected strict H0/H1 change, block concrete allocation,
 blocking, floating-point, unbounded parse/work, hidden compatibility fallback,
 silent stale/gap recovery, wrong-order publication, or data-lifetime violations.
-Require the latency + relevant domain independent review pair if available.
+Select independent reviewers from the
+[critical review matrix](delegation-and-review.md#critical-review-matrix),
+including the network trio where applicable.
 Missing unrequested benchmarks limit performance claims; they are not by
 themselves a functional veto or permission to run measurements.

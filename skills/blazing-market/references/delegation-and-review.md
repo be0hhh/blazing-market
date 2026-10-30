@@ -192,6 +192,14 @@ unresolved decisions still stop dependent implementation.
 - Do not spawn all applicable roles by default. A single agent can apply
   several review lenses; distinct threads are justified by independent scope,
   useful parallelism or an independent-review requirement.
+- Keep computation/memory latency, network latency and transport correctness
+  as distinct capabilities. Computation/memory covers bounded work, allocation,
+  locality, contention and scheduling; network latency covers RX/TX through
+  protocol, socket, kernel and NIC costs. Transport correctness covers trust,
+  framing, partial I/O, deadlines and session/recovery invariants. Endpoint and
+  location evidence belongs to placement expertise, not kernel tuning. See
+  [transport-and-readiness.md](transport-and-readiness.md) for network scope and
+  shared system-context evidence.
 
 ## Task capsule and safe ownership
 
@@ -262,27 +270,42 @@ reuse prior validated findings instead of restarting discovery.
   continue independent authorized work. Simplicity never replaces domain or
   latency review; material repairs to a critical surface repeat its affected
   specialist reviews before the final simplicity review.
-- For final actual H0/H1 changes, require **two distinct read-only reviews**
-  when the platform permits: (1) latency/bounded-computation reviewer, and
-  (2) parser, transport, runtime, execution or quant/domain specialist.
-  For substantive offline finance/computation that is explicitly subject to
-  H0 restrictions, apply the same latency + quant pair even when not live.
+- Select required critical reviewers from the matrix below. Network latency
+  and transport correctness are independent roles; one cannot satisfy both.
 - Critical reviewers must be independent of the author and inspect the final
   relevant source; report CLEAR or findings with severity, exact path/symbol,
   violated invariant, observed evidence and limits. A reviewer cannot grant
   build/test/live authority or claim passing tests from code inspection.
-- Perform domain and latency reviews against the **root-integrated** source
-  after implementation, not a worker's proposed diff in isolation. Use two
-  distinct independent read-only review threads for the selected critical
-  pair when the platform supports them; neither reviewer may stand in for
-  the other or for verification governed by the active policy.
+- Perform critical reviews against the **root-integrated** source after
+  implementation, not a worker's proposed diff in isolation. Each required
+  reviewer uses a distinct independent read-only thread when supported;
+  neither reviewer nor simplicity review stands in for another required role
+  or verification governed by the active policy.
 - Documentation, test-only or strictly mechanical edits do not automatically
-  trigger the critical pair merely by naming a hot subsystem. An unchanged
+  trigger runtime reviews merely by naming a hot or network subsystem. An unchanged
   CLEAR surface needs no repeated review. Repeat only after a concrete repair
   or material change, and restrict to that affected surface.
 - If a required independent reviewer or fresh context is unavailable, report
   that the gate did not run; do not simulate clearance. Independent findings
   are vetoes only when tied to a concrete violated or undefined contract.
+
+## Critical review matrix
+
+Apply by actual changed behavior, including configuration that changes that
+behavior. The network row takes precedence over the ordinary H0/H1 pair.
+
+| Changed surface | Minimum independent final reviewers |
+| --- | --- |
+| Actual non-network H0/H1 | Computation/memory latency + relevant parser, runtime, execution or other domain specialist |
+| Any actual network change, including entirely C lifecycle work such as DNS, connect, TLS setup or reconnect | Computation/memory latency + network latency + transport correctness: **three distinct threads** |
+| Substantive offline financial computation under an explicit H0 contract | Computation/memory latency + quant/financial semantics |
+
+Add independent parser, runtime/execution or quant review when a network change
+also changes substantial separate semantic invariants; the network trio does
+not cover those by implication. Simplicity review never counts toward these
+minimums. Classification as C does not impose blanket strict-H0 restrictions;
+the selected project/profile still controls those restrictions. Report missing
+agents or unsupported independent threads without simulating clearance.
 
 ## Root integration and terminal handoff
 

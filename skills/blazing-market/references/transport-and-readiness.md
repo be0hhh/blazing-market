@@ -6,6 +6,57 @@ subscription/ACK, first data frame, steady-state receive, heartbeat, reconnect,
 terminal write or order/user ACK reader. A cold-stage improvement is not
 automatically H0 latency improvement.
 
+## Network latency
+
+Trace receive and transmit separately: DNS, TCP/proxy connect, TLS/SSL,
+WS/REST/FIX/gRPC protocol work, socket I/O, kernel queues and NIC, then the
+application drain/publication or terminal-write boundary. Distinguish setup,
+steady state, exchange response and local processing costs; include tails,
+jitter, burst drain, backlog and backpressure rather than RTT alone.
+
+The network latency specialist examines syscall/wakeup behavior, socket buffers,
+partial-drain fairness, packet aggregation, offloads, IRQ/NAPI, RSS/RPS/XPS,
+queue/core affinity and CPU/NUMA locality when relevant evidence is available.
+Transport correctness remains a separate review of trust, framing, partial I/O,
+deadlines and session recovery. Placement expertise establishes endpoint or
+location claims; it does not substitute for socket/kernel/NIC analysis. Use the
+[critical review matrix](delegation-and-review.md#critical-review-matrix) even
+for network changes confined to cold/control lifecycle work.
+
+## Linux system context and passive observations
+
+The root coordinates relevant passive observations once per context and passes
+their sources and provenance to reviewers; reviewers independently interpret
+the evidence and inspect source. This skill grants no universal permission to
+inspect an OS, write a cache or use SSH. Follow the active task/user/project
+policy; absent authority, report unavailable system evidence and continue static
+analysis. Observation is separate from tuning or workload execution.
+
+- Identify the actual selected host and observation time. A local, WSL or VM
+  environment is not evidence for a selected remote target. Record relevant
+  host/boot/kernel, network namespace, NIC/driver and scope identity, plus
+  virtualization/container boundaries where they affect conclusions.
+- Collect only relevant current configuration: CPU topology/affinity and NUMA,
+  NIC queues/IRQ placement, NAPI/RSS/RPS/XPS, offloads/coalescing, socket/kernel
+  limits and routes/MTU as needed. Do not infer target configuration from
+  defaults, another host or an old result. Distinguish config from observations
+  of current load, drops, pressure, scheduling or queue occupancy.
+- Reuse an authorized cache only for its actual host, boot, kernel, network
+  namespace, NIC and selected scope. Check current configuration before calling
+  cached values current; unvalidated cached facts are historical. Volatile
+  load/pressure claims require fresh observations. Invalidate affected facts
+  when identity or configuration changes. Store sources/provenance, never
+  credentials or reusable user consent. Plan/no-write work never writes cache.
+- When an explicitly chosen housekeeping/SYSTEM CPU is configured for the
+  collector, constrain collector affinity to it. Do not guess workload placement
+  or move application/IRQ work to make observation convenient. If the configured
+  collection constraint cannot be met, report the limitation.
+- No automatic tuning, package installation, traffic generation, packet capture,
+  performance tracing or eBPF. Such actions require their own applicable task
+  authority. SSH requires separately explicit user/project authorization for
+  the host and operation; preserve host-key and credential trust, bound timeouts
+  and failure attempts, and never weaken validation or retry indefinitely.
+
 ## Transport correctness
 
 - Trace the actual caller from configured route and session owner to the

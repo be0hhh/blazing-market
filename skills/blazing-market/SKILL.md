@@ -1,6 +1,6 @@
 ---
 name: blazing-market
-description: Analyze, review, design, and develop software for crypto and other financial markets in any language. Use for market-data feeds and parsers, hot/cold paths, trading and order execution, financial calculations, session recovery, and evidence-based performance work. Includes scoped agent delegation and independent review for complex market-software tasks.
+description: Analyze, review, design, and develop software for crypto and other financial markets in any language. Use for market-data feeds and parsers, hot/cold paths, network latency, trading and order execution, financial calculations, session recovery, and evidence-based performance work. Includes scoped agent delegation and independent review for complex market-software tasks.
 ---
 
 # Blazing Market
@@ -26,9 +26,9 @@ target. The skill is an audit and implementation guide, not an authority grant.
 | Trigger | Read |
 | --- | --- |
 | Ownership, API/ABI, layout, dependencies, compiler or structure | [architecture-and-contracts.md](references/architecture-and-contracts.md) |
-| Hot path, latency, allocation, queues, cache or pipeline | [hot-cold-paths.md](references/hot-cold-paths.md) |
+| Hot path, computation/memory latency, allocation, queues, cache or pipeline | [hot-cold-paths.md](references/hot-cold-paths.md) |
 | Feeds, normalizers, parser registration, snapshots/deltas, timestamps | [market-data-and-parsers.md](references/market-data-and-parsers.md) |
-| TCP/UDP, TLS, WS/FIX/gRPC, sessions, framing, reconnect, readiness | [transport-and-readiness.md](references/transport-and-readiness.md) |
+| Network RX/TX latency, DNS, TCP/UDP, TLS/SSL, WS/REST/FIX/gRPC, socket/kernel/NIC, Linux system context, sessions or readiness | [transport-and-readiness.md](references/transport-and-readiness.md) |
 | Strategy, order, accounting, risk, bounded runtime and terminal send | [runtime-and-execution.md](references/runtime-and-execution.md) |
 | Backpressure, recovery, partial state, credentials, trust boundaries | [security-and-reliability.md](references/security-and-reliability.md) |
 | Benchmarks, compiler evidence, latency claims and verification | [measurement-and-evidence.md](references/measurement-and-evidence.md) |
@@ -81,8 +81,9 @@ target. The skill is an audit and implementation guide, not an authority grant.
 ## Review gates and decisions
 
 - For substantive code tasks, require early and final independent simplicity
-  review when agents are available. For actual H0/H1 changes, require the two
-  independent latency and domain reviews defined in the delegation contract.
+  review when agents are available. Select critical reviewers from the
+  [canonical review matrix](references/delegation-and-review.md#critical-review-matrix),
+  including its separate network latency and transport correctness roles.
   Review integrated code; report unavailable reviews without simulating them.
 - For risky cross-boundary design, settle behavior, failure semantics, ownership,
   and acceptance with the user before dependent edits. For a high-risk or full

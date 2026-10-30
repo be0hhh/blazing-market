@@ -55,6 +55,7 @@ build system or trading model.
 | --- | --- |
 | **Trace the real path** | Active registration, selected wire, compiled or loaded implementation, publication, consumers and terminal send |
 | **Separate hot and cold work** | Critical computation, adjacent state, lifecycle/control and deep diagnostics |
+| **Trace network costs separately** | RX/TX protocol, socket, kernel and NIC costs alongside transport correctness and endpoint/location evidence |
 | **Bound resources** | Memory, queues, parser work, ownership, lifetimes, backpressure and overflow/refusal behavior |
 | **Preserve market semantics** | Identity, sequence, epochs, snapshots/deltas, clock domains, freshness and numeric scales |
 | **Respect execution state** | Admission, reservations, intent/correlation before submission, ACK/fill/cancel races and unknown outcomes |
@@ -118,9 +119,11 @@ flowchart TD
 - **Substantive code work receives early and final simplicity review** when
   independent agents are available. Final simplicity review follows the relevant
   specialist reviews; tiny mechanical edits do not require these consultations.
-- **Actual H0/H1 changes receive two independent reviews:** latency/bounded
-  computation and the relevant domain specialist. The same pair applies to
-  substantive offline financial computation under an explicit H0 contract.
+- **Critical changes follow the canonical
+  [review matrix](skills/blazing-market/references/delegation-and-review.md#critical-review-matrix).**
+  Network latency and transport correctness are separate reviews, including
+  changes confined to cold connection/recovery work; substantive offline finance
+  retains its computation/memory latency and quant review.
 - **Material questions return to the user through root.** Changed behavior or
   failure policy is settled before dependent work. An unchanged agreed plan and
   active execution permission need no renewed approval.
@@ -180,6 +183,12 @@ The user's instructions, project rules and runtime restrictions govern edits
 and checks. The skill adds no approval ritual for ordinary tests already covered
 by that policy. A plan, hook or worker cannot grant additional authority;
 external and account/order actions retain their applicable permission boundaries.
+
+Linux system-context guidance distinguishes local/WSL/VM observations from the
+selected target host, validates cached configuration and keeps volatile evidence
+fresh. Root shares provenance with independent reviewers. It grants no general
+authority for OS inspection, cache writes, SSH or system tuning; see
+[transport and system context](skills/blazing-market/references/transport-and-readiness.md#linux-system-context-and-passive-observations).
 
 This repository supplies instructions and references. It does not install a
 background service, run an executable scanner, connect to an exchange, or

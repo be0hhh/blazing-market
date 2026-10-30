@@ -13,8 +13,10 @@ introduce networking, compression, telemetry or a GUI into every project.
 - For transport-specific latency compare TCP/TLS/first frame and exchange ACK
   against relevant tails, jitter, failures, source tuple/lane ownership,
   anti-flap hysteresis and promotion windows when used.
-- Consider CPU/IRQ placement and queue pressure only when evidence identifies
-  those costs; changing routing or pinning is not an automatic optimization.
+- Route socket/kernel/NIC costs, CPU/IRQ/NUMA placement and queue pressure to
+  [network latency expertise](transport-and-readiness.md#network-latency).
+  Placement expertise owns endpoint/location claims; neither observation nor
+  a placement finding authorizes routing, affinity or kernel changes.
 - Keep snapshot and data-plane safety separate from control-plane decisions.
 
 ## Recording, corpus and compression

@@ -29,6 +29,11 @@ name, subsystem label, or an isolated function benchmark.
 
 ## Cost and resource checks
 
+Computation/memory latency and network latency are separate review capabilities.
+Use [transport-and-readiness.md](transport-and-readiness.md) for RX/TX and Linux
+system context, and the [critical review matrix](delegation-and-review.md#critical-review-matrix)
+for required independent reviewers, including network changes classified C.
+
 - On the proven path inspect dynamic allocation/growth, exception/error paths,
   virtual/indirect dispatch, locks, syscalls, sleeps, I/O, logging/formatting,
   timestamp capture, copies, temporary payloads, buffer lifetime and
