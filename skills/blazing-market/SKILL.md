@@ -1,6 +1,6 @@
 ---
 name: blazing-market
-description: Analyze, review, design, and develop crypto and financial-market software in any language: market-data feeds/parsers, hot/cold paths, network latency, trading/order execution, financial calculations, session recovery and evidence-based performance. Includes scoped delegation and independent review for complex tasks.
+description: "Analyze, review, design, and develop crypto and financial-market software in any language: market-data feeds/parsers, hot/cold paths, network latency, trading/order execution, financial calculations, session recovery and evidence-based performance. Includes scoped delegation and independent review for complex tasks."
 ---
 
 # Blazing Market
