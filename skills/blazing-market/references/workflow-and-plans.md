@@ -3,6 +3,7 @@
 ## Contents
 
 - [Risk and agreement](#match-ceremony-to-actual-risk)
+- [Proportionate verification](#keep-verification-within-the-task)
 - [Authority and exact checks](#authority-boundaries)
 - [Evidence](#checks-and-evidence-handling)
 - [Durable plan tasks and states](#durable-task-plans-when-actually-needed)
@@ -38,10 +39,39 @@
    details from code. Carry settled choices through refactor and optimization.
 4. Implement the smallest complete authorized change. Read declarations,
    callers and analogues first; preserve unrelated edits and registered tests.
-   Add a targeted useful regression only when it protects affected behavior.
+   Prefer sufficient existing tests; add a focused regression only for a concrete
+   defect or substantial behavioral risk not adequately covered by them. Small
+   reversible edits do not by themselves require new tests. Test observable
+   outcomes or meaningful failure cases rather than merely restating implementation
+   details; avoid tests for prose, per-method quotas or APIs solely for test convenience.
 5. Inspect integration and report implementation separately from tests that
    did or did not run. Do not recreate a failing test history by destroying an
    already suitable implementation; TDD is optional unless requested.
+
+## Keep verification within the task
+
+Assess the whole path: build dependencies, fixtures, data preparation, environment
+and maintenance cost. A narrowly named target need not be a small check. Before
+materially extending verification, identify the uncovered risk of the original
+task and why existing means are insufficient. Prefer an existing sufficient check
+over new infrastructure; explain material tradeoffs in the normal discussion,
+without a new checklist or artifact. Permission to run a command does not itself
+justify expanding the verification package.
+
+Classify a failure as a task defect, a necessary dependency or an unrelated
+check/environment problem. Fix affected code and small defects in its test setup
+within the agreed scope. Failure does not automatically add tasks or acceptance
+criteria. Route foreign-suite repairs, substantial harness expansion or a new
+environment through root; material scope or authority changes go to the user
+before dependent work. A necessary dependency may justify that decision, but
+repairing the check is not a goal in itself. Continue independent authorized work
+and report the blocked check separately.
+
+Preserve existing coverage, assertions and selected acceptance gates. Missing
+unrequested tests are evidence limits, not new defects or review vetoes. Stop
+once the agreed result and selected acceptance are met; do not add runs merely
+to obtain stronger evidence labels. Necessary repeats follow the active policy
+below, without an arbitrary attempt limit or an additional approval ritual.
 
 ## Authority boundaries
 
@@ -69,8 +99,8 @@ fills gaps. An overridden stage is not an incomplete required stage.
   blockers, bootstrap tools or alter target profiles to get a green check.
 - Authorization persists within its agreed task and scope until completion,
   cancellation or scope change; an explicit pause suspends it. Repeat only
-  after a concrete affected fix/change or a resolved blocker, with reason and
-  prior result inspected.
+  after a concrete affected fix/change or a resolved blocker within the agreed
+  scope or an authorized extension, with reason and prior result inspected.
   Reassess changed commands, profiles or resources against that scope and seek
   new approval where required. Failure alone is not a retry instruction.
 - A skill, hook, agent, sandbox capability, plan, status or reviewer does not

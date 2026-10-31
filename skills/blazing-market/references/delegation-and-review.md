@@ -264,9 +264,17 @@ reuse prior validated findings instead of restarting discovery.
 - For substantive code tasks, require an independent simplicity reviewer
   **early**, once scope is known and before choosing the implementation, and
   **late**, after integration and the relevant specialist reviews, when agents
-  are available. Early review searches for reuse and unnecessary layers; final
-  review inspects the actual integrated change. Both are read-only unless
-  given a separate authorized implementation task. Findings go through the
+  are available. Early review searches for reuse, unnecessary layers and sufficient
+  existing verification; final review inspects the actual integrated change.
+  Assess production code, added tests, fixtures, helper APIs and verification
+  scripts together for behavioral value, duplication, coupling to implementation
+  details and maintenance cost. Follow
+  [workflow-and-plans.md](workflow-and-plans.md#keep-verification-within-the-task)
+  for test necessity, check scope and stopping rules. Declining an unjustified
+  new test does not authorize deleting existing coverage or weakening required
+  checks. Missing unrequested tests alone are not a veto or a new acceptance gate.
+  Both consultations are read-only unless given a separate authorized
+  implementation task. Findings go through the
   change owner and root; they do not automatically expand the assignment.
   Tiny mechanical tasks need neither a full cascade nor these consultations.
   If participation is unavailable, report the missing consultation and

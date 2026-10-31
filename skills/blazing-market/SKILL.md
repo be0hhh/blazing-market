@@ -34,8 +34,8 @@ fills gaps. Do not report an overridden stage as incomplete.
 | Strategy, order, accounting, risk, bounded runtime and terminal send | [runtime-and-execution.md](references/runtime-and-execution.md) |
 | Backpressure, recovery, partial state, credentials, trust boundaries | [security-and-reliability.md](references/security-and-reliability.md) |
 | Benchmarks, compiler evidence, latency claims and verification | [measurement-and-evidence.md](references/measurement-and-evidence.md) |
-| Code changes, permissions, checks, plans and completion | [workflow-and-plans.md](references/workflow-and-plans.md) |
-| Substantive code work, complex or high-risk work, agent delegation, simplicity or specialist review | [delegation-and-review.md](references/delegation-and-review.md) |
+| Code changes, test necessity, check scope, permissions, plans and completion | [workflow-and-plans.md](references/workflow-and-plans.md) |
+| Substantive code work, complex or high-risk work, agent delegation, simplicity, unnecessary test/fixture complexity or specialist review | [delegation-and-review.md](references/delegation-and-review.md) |
 | Network placement, compression, recording, diagnostics or UI | [specialized-surfaces.md](references/specialized-surfaces.md) |
 | Explicit LOW LATENCY market/trading system, selected strict profile or strict compute contract | [ultra-low-latency-profile.md](references/ultra-low-latency-profile.md) |
 | Significant findings, code-review report or handoff | [report-contract.md](references/report-contract.md) |
@@ -76,8 +76,11 @@ fills gaps. Do not report an overridden stage as incomplete.
    covered by that policy. For substantive code work or a non-trivial cascade,
    read the delegation contract even when the user did not mention agents.
    The root retains shared-file ownership, user decisions and integration.
-7. **Check and report honestly.** Preserve required tests and contracts; add a
-   focused regression only when useful. Separate static, schema, build,
+7. **Check and report honestly.** Preserve required tests and contracts; prefer
+   sufficient existing verification. Add a focused regression for a concrete
+   uncovered defect or substantial behavioral risk under
+   [workflow-and-plans.md](references/workflow-and-plans.md), which owns test
+   necessity, verification scope and stopping rules. Separate static, schema, build,
    targeted-test, runtime, performance and live evidence. A source-level
    optimization is a `candidate` until comparable before/after measurements
    prove a result. Report blockers and unrun verification distinctly.
