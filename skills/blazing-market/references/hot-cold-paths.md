@@ -40,6 +40,13 @@ changes; pure C/D expertise follows concrete risk and bounded hot-impact inspect
   timestamp capture, copies, temporary payloads, buffer lifetime and
   decompression work. Determine whether each is necessary or measured rather
   than issuing a blanket language-independent ban.
+- Apply the [minimum-checks rule](architecture-and-contracts.md#minimum-necessary-checks-and-repeated-work)
+  across the affected H0/H1/C chain, including module boundaries, finance,
+  admission, terminal send and recovery. Trust established owner guarantees;
+  remove repeated checks, reads, scans, computations, conversions and copies.
+  Prefer preparation/binding and event-maintained state where semantics allow;
+  retain checks for concrete unproved facts or intervening changes, preserving
+  necessary correctness at sufficient owners without a per-if inventory.
 - Inspect queues and rings: producer/consumer ownership, capacity, pressure,
   memory ordering, false sharing, fairness, backlog, drop/overflow signal and
   bounded drain. On a hot low-latency path, publish available market data

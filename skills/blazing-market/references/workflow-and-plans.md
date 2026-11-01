@@ -197,3 +197,9 @@ Native Goal/task features, personal task cards and agent handoff records may
 help continuity where available, but neither replaces the selected plan nor
 confers permission. Planning alone does not launch execution; unavailability
 of those features must not be simulated with fabricated states.
+
+When an existing project or user learning mechanism is available, retain only
+a confirmed useful finding or a diagnosed recurring mistake under its authority
+and evidence rules. Do not create a journal of every attempt or require a
+particular personal store. Respect planning and no-write restrictions; recorded
+experience grants no execution permission or proof that a later change works.

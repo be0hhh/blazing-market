@@ -266,6 +266,13 @@ reuse prior validated findings instead of restarting discovery.
   **late**, after integration and the relevant specialist reviews, when agents
   are available. Early review searches for reuse, unnecessary layers and sufficient
   existing verification; final review inspects the actual integrated change.
+  Apply the [minimum-checks rule](architecture-and-contracts.md#minimum-necessary-checks-and-repeated-work)
+  along the whole affected chain, including module boundaries, admission, sends
+  and recovery. Trust established owner guarantees; find repeated validation,
+  computations, reads, scans, conversions and copies. Ask what can actually
+  change after the prior guarantee before retaining another check. Explain
+  significant retained/added checks while preserving necessary correctness;
+  require no per-if register, new proof wrappers or unrelated full-project audit.
   Assess production code, added tests, fixtures, helper APIs and verification
   scripts together for behavioral value, duplication, coupling to implementation
   details and maintenance cost. Follow

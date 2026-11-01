@@ -29,19 +29,57 @@ choices, architecture and structural simplification.
 - Read the actual declaration, affected caller and analogous implementation
   before a non-trivial edit. Reuse a suitable existing helper. Prefer cohesive
   ownership, purpose-named functions and the smallest complete change.
-- Split code for distinct responsibilities, mixed hot/cold ownership, unsafe
-  review boundaries or deep nesting; combine or inline accidental layers.
-  Neither short files nor blanket DRY deduplication is a goal. Keep meaningful
-  venue/protocol differences and explicit failure handling.
-- Avoid speculative abstractions, duplicate runtimes, copies of linked SDKs,
-  staged alternative production graphs and app-local overrides of a shared
-  authoritative rule.
+- Trace the affected producer-to-consumer path across module boundaries. Look
+  for repeated rules, computations and stored facts, unnecessary adapters,
+  intermediate models, conversions and copies. Prefer one appropriate owner
+  for shared semantics. Preserve snapshots, caches and copies justified by
+  lifetime, thread ownership, representation or contracts; similar syntax alone
+  does not establish equivalent behavior. Bound the search to the affected path.
+- Prefer small files with one narrow responsibility; closely related small types
+  and functions may stay together. Split distinct responsibilities, mixed hot/cold
+  ownership, unsafe review boundaries or deep nesting; combine or inline accidental
+  layers. Use no fixed line limit and avoid fragmentation that merely adds
+  navigation. Preserve meaningful venue/protocol differences and failure handling.
+- Design for a concrete near-term extension or known future consumer; a second
+  implemented consumer is not a prerequisite for considering that design. Name
+  the scenario and discuss material assumptions under the active project policy.
+  Preserve dependency and shared-component boundaries. Examine layers and options
+  without a current or concretely identified near-term consumer; avoid abstractions
+  for unspecified future use, duplicate runtimes, copies of linked SDKs, staged
+  alternative production graphs and app-local overrides of an authoritative rule.
+- Include adjacent cleanup only when necessary for the complete current-task
+  solution; report other findings separately. Finding a duplicate does not itself
+  expand the assignment. For significant decisions, briefly identify the suitable
+  analogue, chosen owner and reasons for preserved differences in the ordinary
+  result, without a separate artifact or a checklist for every helper.
 - Close changes through real declarations, callers, registrations, source
   lists, generated inputs, CLI consumers and operational recipes. Search
   remaining old names within the affected closure; historical artifacts and
   intentionally similar identifiers are not necessarily stale references.
 - Preserve unrelated changes, tests, public behavior and project code style.
   Do not reformat third-party, generated or format-frozen code without scope.
+
+## Minimum necessary checks and repeated work
+
+Minimize runtime checks and repeated work along the entire affected
+producer-to-consumer chain: external/private inputs, network and parsing,
+publication/handoffs, computation/strategy/finance, admission, action preparation
+and send, sessions and recovery. Trust guarantees already established by code
+and the canonical owner, including across modules. A module boundary or a
+defensive coding preference alone does not justify revalidation.
+
+Establish immutable conditions during preparation/binding. Maintain mutable
+conditions through owner events where semantics allow. Retain a check for a
+fact not yet guaranteed or a relevant change after the prior guarantee that
+is not already accounted for, including async, queue, thread or session changes.
+Remove redundant computations, reads, scans, conversions and copies as well
+as checks. Preserve necessary external-input, memory/arithmetic, lifetime,
+capacity, current authority and unknown-outcome guarantees at sufficient owners.
+
+Explain significant retained or added checks with concrete failure/change
+scenarios. Do not require a per-if register or new proof-wrapper framework.
+Trace the whole affected chain; a full-project audit needs its own task scope.
+This rule does not remove tests or change verification permissions.
 
 ## Layout, memory and numeric meaning
 

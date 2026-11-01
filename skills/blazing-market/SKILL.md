@@ -27,7 +27,7 @@ fills gaps. Do not report an overridden stage as incomplete.
 
 | Trigger | Read |
 | --- | --- |
-| Ownership, API/ABI, layout, dependencies, compiler or structure | [architecture-and-contracts.md](references/architecture-and-contracts.md) |
+| Ownership, API/ABI, layout, dependencies, compiler, structure, reuse, duplication, repeated checks/work or unnecessary layers | [architecture-and-contracts.md](references/architecture-and-contracts.md) |
 | Hot path, computation/memory latency, allocation, queues, cache or pipeline | [hot-cold-paths.md](references/hot-cold-paths.md) |
 | Feeds, normalizers, parser registration, snapshots/deltas, timestamps | [market-data-and-parsers.md](references/market-data-and-parsers.md) |
 | Network RX/TX latency, DNS, TCP/UDP, TLS/SSL, WS/REST/FIX/gRPC, socket/kernel/NIC, Linux system context, sessions or readiness | [transport-and-readiness.md](references/transport-and-readiness.md) |
@@ -62,6 +62,10 @@ fills gaps. Do not report an overridden stage as incomplete.
    atomics, cache/false sharing, scheduler, batch fairness, I/O and diagnostics
    only on the proven path. Seek an existing owner and suitable implementation
    before introducing a helper, abstraction or parallel implementation.
+   Apply the [minimum-checks rule](references/architecture-and-contracts.md#minimum-necessary-checks-and-repeated-work)
+   across the whole affected chain, including module boundaries, admission,
+   sends and recovery: trust established owner guarantees and remove redundant
+   checks/work while preserving necessary correctness guarantees.
 5. **Apply the selected constraint profile.** Bounded ownership, semantic
    correctness and truthful evidence always apply. The
    [ultra-low-latency profile](references/ultra-low-latency-profile.md) applies

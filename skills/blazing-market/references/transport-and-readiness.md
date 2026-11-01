@@ -25,6 +25,15 @@ network H0/H1 changes require the independent trio; pure C/D work selects
 expertise by concrete risk after the matrix's bounded inspection establishes
 no hot RX/TX effect. Investigate uncertainty before claiming the cold exemption.
 
+Apply the [minimum-checks rule](architecture-and-contracts.md#minimum-necessary-checks-and-repeated-work)
+through the affected RX/TX, handoff, send and recovery chain. Trust established
+owner guarantees across modules; remove repeated validation, reads, copies and
+preparation. Qualify immutable conditions at setup/bind and use owner events for
+mutable state where semantics allow. Retain checks for concrete changes across
+partial I/O, queues or reconnect, preserving wire/TLS, lifetime, capacity and
+current-session/action authority at sufficient owners. Explain significant
+retained/added checks without a per-if register or new proof wrappers.
+
 ## Linux system context and passive observations
 
 The root coordinates relevant passive observations once per context and passes
@@ -61,6 +70,10 @@ analysis. Observation is separate from tuning or workload execution.
 
 ## Transport correctness
 
+- Preserve required peer, framing, memory, session and unknown-outcome guarantees
+  at their sufficient owning boundaries; downstream code trusts established
+  guarantees unless an intervening change requires a current check. Removing a
+  duplicate check does not weaken the underlying protocol or trust requirement.
 - Trace the actual caller from configured route and session owner to the
   selected socket/client and framing/parser boundary. A compiled helper or
   syntactically valid config is not proof that live dispatch selects it.

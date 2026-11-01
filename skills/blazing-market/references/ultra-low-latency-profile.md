@@ -13,6 +13,12 @@ remaining H1 retains its boundedness, lifetime and ownership class contract.
 
 ## H0 computation and live event loop
 
+- Apply the [minimum-checks rule](architecture-and-contracts.md#minimum-necessary-checks-and-repeated-work)
+  across the affected chain, including module boundaries, send and recovery.
+  Trust established owner guarantees; move immutable qualification to preparation
+  and maintain mutable state by owner events where semantics allow. Remove
+  redundant checks and work while retaining checks for concrete unproved facts
+  or intervening changes and preserving necessary correctness guarantees.
 - No per-event heap allocation or dynamic container growth. Preallocate
   fixed-capacity buffers, state and work slots in cold control code.
 - No exceptions, RTTI, virtual dispatch, uncontrolled recursion, blocking
