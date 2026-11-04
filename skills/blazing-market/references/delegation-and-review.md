@@ -215,6 +215,16 @@ Provide a child a compact, self-contained assignment:
 - Exact authorized actions/checks, if any; otherwise state **none**.
 - Expected output and evidence limitations.
 
+For research, design and implementation on a touched H0/H1 or computational
+core, pass the relevant
+[computation-ahead contract](hot-cold-paths.md#computation-ahead-of-the-event-and-specialization):
+known compile/preparation/event inputs, preparation owner and refresh events,
+agreed specialization/size limits, available codegen artifact identity and
+evidence gaps. Include C where it prepares that path. Existing implementers
+apply settled semantics; material new behavior or ownership choices return to
+root. This does not require a new optimizer role, an unrelated audit or added
+run/review gates; independent read-only reviewers remain separate from authors.
+
 Workers do not edit outside their owned scope, revert others' changes, write
 shared integration files, perform drive-by formatting, silently expand
 requirements or mark their own work verified. A worker's report is a claim;

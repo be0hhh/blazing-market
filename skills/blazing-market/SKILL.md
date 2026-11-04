@@ -66,6 +66,10 @@ fills gaps. Do not report an overridden stage as incomplete.
    across the whole affected chain, including module boundaries, admission,
    sends and recovery: trust established owner guarantees and remove redundant
    checks/work while preserving necessary correctness guarantees.
+   During research, design and authorized implementation of a touched hot or
+   computational path, consider
+   [computation ahead of the event, specialization and useful inlining](references/hot-cold-paths.md#computation-ahead-of-the-event-and-specialization),
+   including preparation in C and available existing machine-code evidence.
 5. **Apply the selected constraint profile.** Bounded ownership, semantic
    correctness and truthful evidence always apply. The
    [ultra-low-latency profile](references/ultra-low-latency-profile.md) applies

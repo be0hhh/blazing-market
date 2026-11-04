@@ -15,6 +15,27 @@ All named tests/checks require the exact authorization imposed by the active
 user/project workflow. Missing unrequested checks limit conclusions; they do
 not turn a static source correction into a falsely failed implementation.
 
+## Existing machine code and artifact provenance
+
+When machine-code analysis is relevant, begin with the latest available build
+of the selected product/profile, within permitted evidence inspection. Establish
+successful completion and identify its final artifact, source identity, compiler,
+effective optimization flags, CPU target and compile/link closure. Timestamps or
+a single cache option do not establish correspondence. For native code, inspect
+the final binary/disassembly with the project's selected tool, accounting for
+inlining and LTO; isolated pre-link ASM may not represent the final program.
+For other runtimes, use the applicable existing codegen evidence and state its
+scope rather than requiring an ELF.
+
+If the latest build is unsuitable, explain any choice of another existing
+matching artifact. Old, incomplete or mismatched artifacts are historical
+context, not proof of current code. If provenance or suitable machine code is
+unavailable, state that limit and continue source analysis. Inspect actual
+inlining, specialization, constant folding, remaining calls and repeated work
+before proposing compiler effects that may already exist. Neither annotations
+nor ASM prove a latency win. This guidance grants no new build, codegen,
+artifact creation or tool-run authority; follow the active task permissions.
+
 ## Baseline before promotion
 
 Before claiming a measured speedup, record and match:

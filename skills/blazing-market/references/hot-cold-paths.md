@@ -66,6 +66,39 @@ changes; pure C/D expertise follows concrete risk and bounded hot-impact inspect
   Avoid extra abstraction, copy, lock, queue, syscall or clock on a send path
   without an actual contract or measurable need.
 
+## Computation ahead of the event and specialization
+
+Apply this during research, design and authorized implementation of the touched
+H0/H1 or computational core. Include C where it prepares that path, without
+requiring a full-system audit or extending strict-hot bans to other code.
+
+- Distinguish inputs known at compile/build time, configuration/metadata/bind,
+  and event time. Consider constant evaluation and tables, bounded
+  specialization, constant propagation and dead-branch elimination when the
+  language/toolchain supports them; constexpr/consteval are C++ examples.
+- For inputs known only during preparation, compute once at the canonical
+  owner where useful and publish bounded ready state. Specify refresh events
+  for mutable inputs and preserve publication/lifetime through reload, queues
+  and reconnect. Preserve arithmetic, scale, rounding, overflow, current
+  authority/generation/capacity and financial facts; do not cache changing
+  decisions as immutable assumptions or add unbounded hot memoization.
+- Follow actual callers for useful inlining and devirtualization. Account for
+  definition visibility, effective optimizer flags and compile/link closure,
+  including LTO where applicable. An annotation or template does not prove
+  inlining. Consider code/table growth, specialization count, stack/register
+  pressure and possible instruction-cache costs; avoid blanket forced
+  inlining, header migration and variant proliferation.
+- For a useful candidate, name the owner and caller path, when inputs become
+  known, work removed, preparation/specialization and refresh mechanism, and
+  material tradeoffs. Distinguish already-performed compiler optimizations
+  from proposals using suitable existing codegen evidence under
+  [measurement-and-evidence.md](measurement-and-evidence.md#existing-machine-code-and-artifact-provenance).
+  Missing machine code leaves a source candidate, not a measured speedup.
+
+Apply only the task's permissions; this contract authorizes no new builds,
+artifacts, probes or benchmarks and adds no review gate. Keep language/project
+constraints and independent author/reviewer responsibilities intact.
+
 ## Latency claims
 
 - A faster DNS lookup, startup handshake or reconnect is a cold/control
