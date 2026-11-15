@@ -35,7 +35,7 @@ fills gaps. Do not report an overridden stage as incomplete.
 | Backpressure, recovery, partial state, credentials, trust boundaries | [security-and-reliability.md](references/security-and-reliability.md) |
 | Benchmarks, compiler evidence, latency claims and verification | [measurement-and-evidence.md](references/measurement-and-evidence.md) |
 | Code changes, test necessity, check scope, permissions, plans and completion | [workflow-and-plans.md](references/workflow-and-plans.md) |
-| Substantive code work, complex or high-risk work, agent delegation, simplicity, unnecessary test/fixture complexity or specialist review | [delegation-and-review.md](references/delegation-and-review.md) |
+| Substantive code work, test authorship/orchestration, complex or high-risk work, agent delegation, simplicity, unnecessary test/fixture complexity or specialist review | [delegation-and-review.md](references/delegation-and-review.md) |
 | Network placement, compression, recording, diagnostics or UI | [specialized-surfaces.md](references/specialized-surfaces.md) |
 | Explicit LOW LATENCY market/trading system, selected strict profile or strict compute contract | [ultra-low-latency-profile.md](references/ultra-low-latency-profile.md) |
 | Significant findings, code-review report or handoff | [report-contract.md](references/report-contract.md) |
@@ -84,9 +84,15 @@ fills gaps. Do not report an overridden stage as incomplete.
    covered by that policy. For substantive code work or a non-trivial cascade,
    read the delegation contract even when the user did not mention agents.
    The root retains shared-file ownership, user decisions and integration.
+   Use strong solution and independent review owners where useful, within the
+   host's [native coordination contract](references/delegation-and-review.md#native-coordination-and-strong-branch-owners).
 7. **Check and report honestly.** Preserve required tests and contracts; prefer
-   sufficient existing verification. Add a focused regression for a concrete
-   uncovered defect or substantial behavioral risk under
+   sufficient existing verification. Production implementation agents never
+   create or change tests. When test work is justified, assign it through a
+   strong test orchestrator to separate test-author children under the
+   [test ownership contract](references/delegation-and-review.md#test-orchestration-and-authorship).
+   Request a focused regression for a concrete uncovered defect or substantial
+   behavioral risk under
    [workflow-and-plans.md](references/workflow-and-plans.md), which owns test
    necessity, verification scope and stopping rules. Separate static, schema, build,
    targeted-test, runtime, performance and live evidence. A source-level

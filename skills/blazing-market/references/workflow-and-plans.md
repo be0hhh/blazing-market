@@ -39,11 +39,15 @@
    details from code. Carry settled choices through refactor and optimization.
 4. Implement the smallest complete authorized change. Read declarations,
    callers and analogues first; preserve unrelated edits and registered tests.
-   Prefer sufficient existing tests; add a focused regression only for a concrete
-   defect or substantial behavioral risk not adequately covered by them. Small
+   Prefer sufficient existing tests; request a focused regression only for a
+   concrete defect or substantial behavioral risk not adequately covered by them. Small
    reversible edits do not by themselves require new tests. Test observable
    outcomes or meaningful failure cases rather than merely restating implementation
    details; avoid tests for prose, per-method quotas or APIs solely for test convenience.
+   Production agents never create or change tests; justified test work belongs
+   to separate test-author children of a strong test orchestrator. Use
+   [test orchestration and authorship](delegation-and-review.md#test-orchestration-and-authorship)
+   for ownership, independent expected results, failure triage and snapshots.
 5. Inspect integration and report implementation separately from tests that
    did or did not run. Do not recreate a failing test history by destroying an
    already suitable implementation; TDD is optional unless requested.
@@ -59,9 +63,10 @@ without a new checklist or artifact. Permission to run a command does not itself
 justify expanding the verification package.
 
 Classify a failure as a task defect, a necessary dependency or an unrelated
-check/environment problem. Fix affected code and small defects in its test setup
-within the agreed scope. Failure does not automatically add tasks or acceptance
-criteria. Route foreign-suite repairs, substantial harness expansion or a new
+check/environment problem. Route production repairs to production owners and
+test/setup repairs to the assigned test subtree within the agreed scope.
+Failure does not automatically add tasks or acceptance criteria. Route
+foreign-suite repairs, substantial harness expansion or a new
 environment through root; material scope or authority changes go to the user
 before dependent work. A necessary dependency may justify that decision, but
 repairing the check is not a goal in itself. Continue independent authorized work
@@ -84,7 +89,8 @@ fills gaps. An overridden stage is not an incomplete required stage.
 - **Study/diagnose/review/status:** read-only. No source or plan-state edits.
 - **Plan:** write selected plan artifacts only when permitted by the user and
   active mode. Planning does not itself authorize implementation or runs.
-- **Implement:** perform the requested edits and useful test additions. Run
+- **Implement:** perform the requested production edits; assign justified test
+  additions or changes through the separate test subtree linked above. Run
   ordinary targeted tests/builds when covered by the task and active policy;
   if that policy requires separate command approval, obtain it before running.
 - **Verify:** choose the smallest relevant checks and identify commands,

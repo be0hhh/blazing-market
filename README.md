@@ -111,9 +111,14 @@ flowchart TD
     MEDIUM --> AUTH
     AGREE --> AUTH
     AUTH -->|"No"| PROPOSAL["Return findings or plan"]
-    AUTH -->|"Yes"| IMPLEMENT["Implement within owned scopes"]
-    IMPLEMENT --> INTEGRATE["Root integrates and inspects the result"]
-    INTEGRATE --> REVIEW["Required independent domain / latency reviews"]
+    AUTH -->|"Yes"| IMPLEMENT["Production solvers implement within owned scopes"]
+    AUTH -->|"Yes, test work needed"| TEST["Strong test orchestrator → separate test-author children"]
+    IMPLEMENT -.->|"Contract changes and owned snapshots"| TEST
+    IMPLEMENT --> INTEGRATE["Root integrates production and test changes"]
+    TEST --> INTEGRATE
+    IMPLEMENT -.-> EARLYREVIEW["Read-only review of stable parts"]
+    EARLYREVIEW -.-> INTEGRATE
+    INTEGRATE --> REVIEW["Independent strong review orchestrator coordinates required specialist threads"]
     REVIEW --> FINAL["Final simplicity review when required"]
     FINAL --> FINDINGS{"Actionable findings?"}
     FINDINGS -->|"Yes, within agreed scope"| IMPLEMENT
@@ -124,6 +129,11 @@ flowchart TD
 - **Small tasks stay small.** No full cascade, durable plan or arbitrary agent quota.
   High risk still requires fresh independent plan review; it does not by itself
   require a separate designer.
+- **Production agents never create or change tests.** Justified test work goes
+  through a strong test orchestrator to separate test-author children. Existing
+  sufficient coverage needs no new tests or test subtree. Test analysis and
+  read-only review of stable parts can overlap implementation; selected runs
+  use an identified stable snapshot and final review uses the integrated result.
 - **Substantive code work receives early and final simplicity review** when
   independent agents are available. Final simplicity review follows the relevant
   specialist reviews; tiny mechanical edits do not require these consultations.
@@ -149,19 +159,21 @@ requires root approval before creation, within the user's existing permissions.
 ```mermaid
 flowchart TD
     USER["User"] <-->|"Decisions and final result"| ROOT["Root orchestrator"]
-    ROOT -->|"Approved task capsule"| A["Branch owner A"]
-    ROOT -->|"Approved task capsule"| B["Branch owner B"]
-    A -->|"Approved child scope"| A1["Subagent A.1"]
-    A -->|"Approved child scope"| A2["Subagent A.2"]
-    B -->|"Approved child scope"| B1["Subagent B.1"]
-    A1 -->|"Approved nested scope"| N["Next-level subagent"]
-
-    N -.->|"Evidence and limits"| A1
-    A1 -.->|"Consolidated result"| A
-    A2 -.->|"Result"| A
-    B1 -.->|"Result"| B
+    ROOT --> X["Strong research / design owners, when useful"]
+    ROOT -->|"Approved solution scope"| A["Strong solution / domain coordinator"]
+    ROOT -->|"Independent review scope"| V["Strong review orchestrator"]
+    V --> VS["Required independent specialist threads"]
+    V --> VH["Bounded read-only helpers, if useful"]
+    A -->|"Production files"| A1["Strong production solvers"]
+    A -->|"Needed test work for these solvers"| T["Shared strong test orchestrator"]
+    T -->|"Test files and justified expectations"| TA["Separate TEST_AUTHOR children"]
+    A1 -.->|"Contracts and owned snapshots via parent"| A
+    TA -.->|"Test changes, evidence and limits"| T
+    T -.->|"Consolidated test result"| A
     A -.->|"Branch result / subtree proposal"| ROOT
-    B -.->|"Branch result / subtree proposal"| ROOT
+    VS -.->|"Findings and evidence limits"| V
+    VH -.->|"Bounded evidence"| V
+    V -.->|"Integrated findings"| ROOT
 ```
 
 Solid arrows carry approved assignments downward; dashed arrows return evidence,
@@ -173,6 +185,44 @@ integration files and routes user decisions back down. Workers receive concrete
 outcomes, non-overlapping ownership, relevant contracts and exact authorized
 actions. Reviewers remain independent of the authors they review. No depth or
 worker count is a goal: recursion serves useful independent work.
+
+Strong branch owners handle coherent research, design, solution, test or review
+responsibilities when useful; the tree does not require all phases or empty
+levels. The solution owner closes behavior, interfaces, dependencies and its
+integration scope. Substantive production authors are strong agents. Mechanical
+helpers in solution/review branches collect bounded read-only evidence from
+complete specifications; host policy may also allow mechanical document edits.
+The independent strong review orchestrator assigns risk coverage and integrates
+findings while required specialists remain distinct independent threads. It
+cannot replace their clearance, override concrete vetoes or write the reviewed
+implementation. Repairs return to authors with bounded re-review.
+
+These roles use the host's same native agent swarm and its actual exposed
+worker/helper, coordinator, board/event and communication capabilities. Do not
+add a second scheduler, dispatcher, queue, daemon, private API or vendor patch.
+If child helpers are unavailable, root dispatches the approved leaves
+and returns results to their branch owner, reporting the flattened runtime
+honestly. Complete task capsules carry decisions and bounded context; a shared
+board does not make reviewers independent. Fresh reviewers exclude peer opinions
+and prior verdicts. Host model routing, permissions and risk gates still apply.
+
+An individual solver's test scope uses solver → test orchestrator → test authors.
+One shared test orchestrator can serve multiple related solvers as a child of
+their nearest common coordinator, as shown above; common tests have one owner
+there. Do not add an empty solver level. Tiny test work needs only
+root → test orchestrator → test author. The orchestrator owns risk analysis,
+sufficient cases, independent expected results, fixtures and triage; authors
+own test edits. Critical or unclear tests use a strong author; mechanical authors
+receive complete ready specifications. Model selection follows the host's actual
+capabilities and user choice.
+
+Shared branches use disjoint production/test file ownership and one integration
+owner for shared manifests. Parents relay current-task decisions and snapshots
+at binding, contract changes, failures, review repairs and final freeze. Required
+final reviewers are independent of the test orchestrator and authors. Compiler
+or environment failures remain `BLOCKED`; assertions are never weakened merely
+to obtain `GREEN`. These responsibilities add no automatic test quota, background
+chat monitoring or extra approval ritual.
 
 The complete contracts are in
 [delegation and review](skills/blazing-market/references/delegation-and-review.md)

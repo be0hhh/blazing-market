@@ -9,8 +9,10 @@ skill where they leave gaps, without calling overridden stages incomplete.
 ## Contents
 
 - [Ownership and recursive tree](#ownership-of-the-whole-result)
+- [Native coordination and strong branch owners](#native-coordination-and-strong-branch-owners)
 - [Four-stage cascade and questions](#four-stage-cascade-with-feedback)
 - [Roles, task capsules and owned scopes](#role-and-effort-selection)
+- [Test orchestration and authorship](#test-orchestration-and-authorship)
 - [Fresh independent plan review](#fresh-independent-plan-review)
 - [Final independent code review](#review-independence-and-the-simplicity-specialist)
 
@@ -32,7 +34,8 @@ skill where they leave gaps, without calling overridden stages incomplete.
   launched. This is an internal coordination gate, not a new user approval
   for every worker or an expansion of the user's permissions.
 - Use recursion only for genuinely independent, well-bounded results that
-  benefit from it. A small or tightly coupled task stays with one agent.
+  benefit from it. A small or tightly coupled task without test authorship can
+  stay with one agent; needed test edits use the minimal separate subtree below.
   Concurrency and depth are bounded by the actual runtime, not by an arbitrary
   target number of workers.
 - A nested agent may **propose** child roles, scopes, supported settings and
@@ -46,22 +49,60 @@ skill where they leave gaps, without calling overridden stages incomplete.
 ```mermaid
 flowchart TD
     U["User"] <--> R["Root orchestrator"]
-    R <--> X["Research branch"]
-    R <--> P["Design branch"]
-    R <--> I["Implementation owner"]
-    R <--> V["Independent reviewers"]
-    I <--> A["Task owner: Feed"]
-    I <--> B["Task owner: Runtime"]
-    A <--> A1["Child: bounded parser"]
-    A <--> A2["Child: event semantics"]
-    B <--> B1["Child: isolated change"]
-    B <--> B2["Child: targeted test authoring"]
+    R <--> X["Strong research owner"]
+    R <--> P["Strong design owner"]
+    R <--> I["Strong solution / domain coordinator"]
+    R <--> V["Independent strong review orchestrator"]
+    V <--> VS["Required independent specialist threads"]
+    V <--> VH["Bounded read-only evidence helpers, if useful"]
+    I <--> A["Strong production solver: Feed"]
+    I <--> B["Strong production solver: Runtime"]
+    A <--> A1["Strong substantive production child, if useful"]
+    I <--> T["Shared strong test orchestrator: serves these solvers"]
+    T <--> TA["Separate TEST_AUTHOR children"]
 ```
 
 The double arrows denote task/plan delivery and feedback. Branches are
 optional, never a mandatory agent quota. Child-to-parent reports are
 consolidated upward; user questions go through the root, not direct child-user
 side channels. Reviewers are independent of the author of the reviewed change.
+
+## Native coordination and strong branch owners
+
+For large work, place useful research, design, solution, test and review branches
+under strong owners. Select branches for independent responsibilities rather
+than requiring every phase or inserting empty levels. The solution/domain owner
+owns coherent behavior, interfaces, dependencies and integration of its accepted
+scope. Substantive production authors are strong agents. Read-only mechanical
+helpers in solution or review branches receive complete bounded evidence tasks;
+they do not make semantic decisions or author production changes. Mechanical
+test authors retain the separate ready-specification rules below. Non-production
+text/document mechanics may use mechanical workers under host policy.
+
+An independent strong review orchestrator, separate from the solution branch,
+test orchestrator and authors, owns risk coverage, reviewer assignments and
+integrated findings. It does not write the implementation it reviews, replace
+required independent specialist threads, override their concrete vetoes or
+self-clear their gates. Findings return to the appropriate author through the
+owner; repairs receive bounded re-review of the materially affected surface.
+This coordination adds no new review gate beyond the applicable task rules.
+
+All these roles are participants in the host's **same native agent swarm**:
+use its exposed worker/helper and communication capabilities, coordinator and
+available shared board/events. Parents own accepted child scopes and reports.
+Do not add a second scheduler, dispatcher, queue, daemon, private API or vendor
+patch to implement this tree. If native child helpers are unavailable, root
+physically dispatches the approved leaf tasks and returns their results to the
+branch owner. Report that flattened runtime honestly; conceptual ownership does
+not prove that nested workers were physically launched. Use only capabilities
+the host actually exposes and retain its permission and model-routing rules.
+
+Send complete capsules with current decisions, bounded context and ownership;
+a shared board does not establish review independence. Fresh reviewers still
+receive fresh context and exclude peer opinions or prior verdicts under the
+review rules below. Use stronger settings or an additional reasoning pass only
+for a concrete bounded uncertainty under existing host routing; prompt wording
+does not change actual runtime settings.
 
 ## Nested subtree approval and feedback
 
@@ -103,7 +144,9 @@ flowchart TD
     AG -->|Yes| G{"Execution authorized?"}
     G -->|No| STOP["Present plan; stop edits"]
     G -->|Yes| C["3 · Bounded implementation subtrees"]
-    C --> I["Root integrates source and callers"]
+    C --> I["Root integrates production and test changes"]
+    C -.-> TA["Early test analysis and stable-part read-only review"]
+    TA -.-> I
     I --> R["Independent hot/domain reviews"]
     R --> SIMPLE["Final independent simplicity review"]
     SIMPLE --> F{"Actionable finding?"}
@@ -121,6 +164,9 @@ not a test or performance benchmark. Small direct tasks bypass the full cascade;
 high-risk plans still receive fresh independent plan review, without requiring
 a separate designer merely for risk. Simplicity stages apply to substantive
 code tasks; report unavailable applicable stages without simulating clearance.
+Test analysis and read-only review of stable parts may overlap remaining
+implementation. Final review still consumes the integrated current snapshot;
+the diagram does not impose a global sequential barrier on independent work.
 
 ## Questions and handoffs
 
@@ -166,7 +212,9 @@ explicit pause, cancellation or scope change does.
    The root owns shared registries/manifests/public integration files. A worker
    proposes bounded child roles/scopes/settings through its parent to root and
    may launch only after root approves and the runtime permits it; the parent
-   returns consolidated results upstream.
+   returns consolidated results upstream. Production solvers do not author or
+   repair tests; needed test work uses the separate subtree below. Test analysis
+   and review of stable parts can proceed while other implementation continues.
 4. **Integration/review/verification:** root inspects actual changed code and
    consumers, then obtains relevant independent reviews. Resolve veto findings
    within authority; re-review only changed/repaired critical surfaces. Tests,
@@ -180,12 +228,18 @@ unresolved decisions still stop dependent implementation.
 
 ## Role and effort selection
 
-- Select capability from the task, not a fixed model leaderboard: bounded
-  researcher/explorer; architect/designer for uncertain contracts; mechanical
-  worker for fully specified edits; domain engineer for substantive changes;
-  independent specialist reviewer for critical risk.
-- Give a mechanical worker only settled, small tasks and sufficient patch shape;
-  return design gaps to the parent instead of improvising new behavior.
+- Select capability from the task, not a fixed model leaderboard: strong
+  owners for substantive research/design, solution and review branches; strong
+  production authors; independent specialist reviewers for critical risk.
+  Use bounded read-only mechanical helpers for ready evidence tasks, and
+  mechanical text/document workers only where host policy permits.
+- Test orchestration requires a strong semantic owner. A separate strong
+  test-author child handles critical or unclear tests; a mechanical author gets
+  only a complete ready specification. These are portable capabilities, not
+  fixed model names. Verify actual settings only where the platform exposes them.
+- Give a mechanical helper only a complete, settled, bounded specification
+  within the permitted responsibilities above; return design gaps to the
+  parent instead of improvising new behavior.
 - Increase reasoning depth for cross-boundary architecture, high-risk decisions,
   final critical review, or independent contradiction resolution. Broad
   escalation is occasional and must have a concrete purpose.
@@ -204,6 +258,84 @@ unresolved decisions still stop dependent implementation.
   [transport-and-readiness.md](transport-and-readiness.md) for network scope and
   shared system-context evidence.
 
+## Test orchestration and authorship
+
+### Tree and ownership
+
+Production implementation agents may inspect tests and discuss scenarios, but
+**never create or change tests**, including test repairs after failures or
+review. Test edits belong exclusively to explicitly assigned **TEST_AUTHOR**
+threads. A strong **TEST_ORCHESTRATOR** coordinates that work and does not edit
+tests itself. These are task responsibilities, not required platform API names.
+
+For a large tree, use root → domain coordinator → production solver → strong
+test orchestrator → separate test-author children for an individual solver's
+test scope. One shared orchestrator may instead serve several related solvers
+as a child of their nearest common coordinator, as shown above; independent
+domains may each have their own orchestrator. Do not insert an empty solver
+level merely to host an orchestrator.
+Assign common tests once at the nearest common coordinator; avoid duplicate or
+competing test owners. For tiny justified test work, root → test orchestrator →
+test author is enough. Do not add empty coordination levels, per-method or
+per-scenario worker quotas, or a test subtree when no test work is needed.
+Nested subtree proposals still use the root's existing internal approval gate;
+they do not require an extra routine user permission exchange.
+
+In a shared branch, assign disjoint production and test files before edits.
+Keep each shared registration or manifest with one named integration owner;
+authors supply the necessary integration change to that owner.
+Do not introduce a new test framework merely to support this division of work.
+
+### Orchestrator and author responsibilities
+
+The orchestrator owns test-risk analysis and sufficient cases, independently
+justified expected results, fixture realism, clock domains, units, object
+lifetimes, registration closure and failure triage. Existing sufficient coverage
+can close a risk without new tests. Expected values must follow the agreed
+contract, a justified independent model or authoritative data; copying the
+implementation's result into the assertion does not justify it. Consistency
+checks may be useful evidence, but do not prove that the expected result was
+chosen correctly.
+
+The orchestrator gives each author exact owned files, intended behavior,
+sufficient normal/failure cases, justified expected results, fixture constraints,
+registration owner, snapshot identity and authorized actions. A strong author
+resolves substantive test design within agreed semantics; material semantic gaps
+return through the orchestrator to root. A mechanical author only implements a
+complete ready specification and returns gaps without inventing expectations.
+Production solvers supply contract and implementation context without gaining
+test edit ownership. This separation applies to root acting as a production
+solver as well as to ordinary workers.
+
+### Current-task updates and stable evidence
+
+At initial binding, contract changes, check failures, reviewer-driven repairs
+and final freeze, the parent sends the orchestrator the current decisions and
+owned diff or identified snapshot, including relevant production/test surfaces
+and shared integration ownership. The orchestrator follows the **current task
+tree** through these messages and bounded file reads. It is not a daemon that
+monitors all chats, unrelated tasks or repositories.
+
+Start risk analysis early and review stable parts read-only alongside remaining
+implementation. Run selected tests only against an identified stable snapshot;
+record what was exercised and re-establish that identity if concurrent edits
+change the surface. Final required review inspects the integrated production and
+test snapshot. Its reviewer is independent of both orchestrator and authors;
+the orchestrator's assessment does not replace it. Use the task's applicable
+review gates, without adding a universal separate review gate for every trivial
+test. Repeat review only for materially changed surfaces. Add an adversarial
+pair only for a concrete unresolved risk, not automatically for every complex
+task.
+
+On failure, separate production defects, test/fixture defects and infrastructure
+blocks, and route each to its owner. Compiler or environment failure is
+`BLOCKED`, not behavioral `RED`. Never weaken assertions or select easier
+expected values merely to obtain `GREEN`; revise an expectation only when its
+semantic justification was wrong, with that correction made explicit. Preserve
+the failed evidence. Writing tests grants no run authority: host policy governs
+commands, approvals, models, services and external actions under
+[workflow-and-plans.md](workflow-and-plans.md).
+
 ## Task capsule and safe ownership
 
 Provide a child a compact, self-contained assignment:
@@ -211,7 +343,8 @@ Provide a child a compact, self-contained assignment:
 - Observable outcome; exact owned paths, symbols and structures.
 - Relevant contracts, source anchors, settled decisions and available evidence.
 - Branch behavior, affected callers/consumers/registrations, and shared owners.
-- Test scenarios, acceptance criteria and explicit anti-criteria.
+- Test scenarios, acceptance criteria and explicit anti-criteria; production
+  versus test edit ownership and the assigned test orchestrator when needed.
 - Exact authorized actions/checks, if any; otherwise state **none**.
 - Expected output and evidence limitations.
 
