@@ -82,6 +82,14 @@ requiring a full-system audit or extending strict-hot bans to other code.
   and reconnect. Preserve arithmetic, scale, rounding, overflow, current
   authority/generation/capacity and financial facts; do not cache changing
   decisions as immutable assumptions or add unbounded hot memoization.
+- **Integer division (`/` and `%`) audit:** inspect every `/` and `%` on touched
+  hot or computational paths that is not proved compile-time (annotations such
+  as `constexpr` alone do not prove compile-time evaluation). Fixed power-of-two
+  and power-of-ten scales are acceptable where compiler strength reduction
+  applies; otherwise prefer compile-time evaluation, overflow-safe
+  cross-multiplication for comparisons, or cold-prepared invariant divisors
+  (Barrett / Granlund–Montgomery / `FastDivisor`) when a runtime quotient is
+  genuinely needed — preserving sign, rounding direction, and overflow refusal.
 - Follow actual callers for useful inlining and devirtualization. Account for
   definition visibility, effective optimizer flags and compile/link closure,
   including LTO where applicable. An annotation or template does not prove

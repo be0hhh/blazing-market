@@ -29,8 +29,11 @@ npx skills add be0hhh/blazing-market -g
 
 Requires Node.js and npm; see the [skills CLI](https://github.com/vercel-labs/skills)
 for current prerequisites and supported agents. One installation includes the
-skill and all its references. Compatible clients include Codex and Claude Code;
-available agent and orchestration capabilities depend on the client.
+skill and all its references. Compatible clients include Codex, Antigravity,
+and Claude Code; available agent and orchestration capabilities depend on the
+client. For large codebases, pairing the skill with a shared local RAM/symbol
+context server such as [ctx-mcp](https://github.com/be0hhh/ctx-mcp) is optional
+and helps avoid repeated file slicing and redundant reads.
 
 Then ask your agent to use it:
 
@@ -56,7 +59,7 @@ build system or trading model.
 | Practice | What the agent examines |
 | --- | --- |
 | **Trace the real path** | Active registration, selected wire, compiled or loaded implementation, publication, consumers and terminal send |
-| **Separate hot and cold work** | Critical computation, adjacent state, lifecycle/control and deep diagnostics |
+| **Separate hot and cold work** | Critical computation, adjacent state, lifecycle/control, integer-division elimination and deep diagnostics |
 | **Trace network costs separately** | RX/TX protocol, socket, kernel and NIC costs alongside transport correctness and endpoint/location evidence |
 | **Bound resources** | Memory, queues, parser work, ownership, lifetimes, backpressure and overflow/refusal behavior |
 | **Preserve market semantics** | Identity, sequence, epochs, snapshots/deltas, clock domains, freshness and numeric scales |
@@ -95,54 +98,65 @@ a planning request stops at the proposal. Neither authorizes implementation.
 flowchart TD
     TASK["Requested outcome"] --> RISK{"Complexity and risk"}
 
-    RISK -->|"Small / low risk"| SMALL["Inspect owner and callers; early simplicity review if required"]
-    RISK -->|"Moderate"| MEARLY["Early simplicity review when required"]
-    MEARLY --> MEDIUM["In-chat plan and scoped helpers if useful"]
-    RISK -->|"Small / high risk"| HPLAN["Early simplicity if required; decision-complete in-chat plan"]
+    RISK -->|"Small / compact 1-2 module M"| SMALL["Direct-first in root: inspect owner/callers + inline early simplicity"]
+    RISK -->|"Small / high risk"| HPLAN["Grill-me open branches + decision-complete in-chat plan"]
     HPLAN --> PLANREVIEW
-    RISK -->|"Complex"| RESEARCH["Read-only research"]
+    RISK -->|"3+ subsystems / complex"| RESEARCH["Optional context_scout -> read-only research"]
     RESEARCH --> ROOT["Root considers findings"]
-    ROOT --> HEARLY["Early simplicity review when required"]
-    HEARLY --> DESIGN["Separate designer prepares the solution"]
-    DESIGN --> PLANREVIEW["Fresh independent plan review"]
-    PLANREVIEW --> AGREE["Root settles decisions and required user agreement"]
+    ROOT --> HEARLY["Separate early simplicity review"]
+    HEARLY --> DESIGN["Separate designer + grill-me on unresolved branches"]
+    DESIGN --> PLANREVIEW["<= 1 fresh independent plan review pass"]
+    PLANREVIEW --> AGREE["Root integrates routine fixes & settles user agreement"]
 
     SMALL --> AUTH{"Implementation authorized?"}
-    MEDIUM --> AUTH
     AGREE --> AUTH
     AUTH -->|"No"| PROPOSAL["Return findings or plan"]
     AUTH -->|"Yes"| IMPLEMENT["Production solvers implement within owned scopes"]
-    AUTH -->|"Yes, test work needed"| TEST["Strong test orchestrator → separate test-author children"]
+    AUTH -->|"Yes, critical/complex tests"| TEST["Strong test orchestrator -> separate test-author children"]
     IMPLEMENT -.->|"Contract changes and owned snapshots"| TEST
     IMPLEMENT --> INTEGRATE["Root integrates production and test changes"]
     TEST --> INTEGRATE
     IMPLEMENT -.-> EARLYREVIEW["Read-only review of stable parts"]
     EARLYREVIEW -.-> INTEGRATE
     INTEGRATE --> REVIEW["Independent strong review orchestrator coordinates required specialist threads"]
-    REVIEW --> FINAL["Final simplicity review when required"]
+    REVIEW --> FINAL["Final simplicity review on substantive diffs"]
     FINAL --> FINDINGS{"Actionable findings?"}
     FINDINGS -->|"Yes, within agreed scope"| IMPLEMENT
     FINDINGS -->|"No"| CHECK["Run checks covered by active policy"]
     CHECK --> REPORT["Report outcome, evidence and remaining limits"]
 ```
 
-- **Small tasks stay small.** No full cascade, durable plan or arbitrary agent quota.
-  High risk still requires fresh independent plan review; it does not by itself
-  require a separate designer.
-- **Production agents never create or change tests.** Justified test work goes
-  through a strong test orchestrator to separate test-author children. Existing
-  sufficient coverage needs no new tests or test subtree. Test analysis and
-  read-only review of stable parts can overlap implementation; selected runs
-  use an identified stable snapshot and final review uses the integrated result.
-- **Substantive code work receives early and final simplicity review** when
-  independent agents are available. Final simplicity review follows the relevant
-  specialist reviews; tiny mechanical edits do not require these consultations.
+- **Direct-first Risk S and compact 1–2 module Risk M.** Handle discovery,
+  planning, and inline early simplicity directly in the primary agent without a
+  full cascade or durable plan. Reserve a separate early simplicity subagent and
+  full research/design cascade for **3+ subsystem** or **Risk H** work.
+- **Grill-me on non-trivial plans, `<= 1` fresh plan review pass, and Boost on
+  contested decisions.** Interview the user down unresolved design branches with
+  code-grounded recommendations before locking a Risk M/H plan; cap fresh
+  independent plan review at at most one pass (integrating routine findings
+  directly without `v2`/`v3` loops); focus evidence-backed **boost** resolution
+  strictly on contested decisions.
+- **Optional `context_scout` + full actionable task specs.** Use a fast
+  read-only 2–4 turn scout on unfamiliar multi-file surfaces to return a compact
+  Scope Map (paths, lines, symbols, callers) without conclusions, and give
+  strong workers self-contained specs plus portable whole-file/symbol retrieval
+  and anti-stall delivery rules.
+- **Proportionate test ownership.** Localized mechanical test/fixture repairs
+  (preserving scenarios and assertions) and ordinary regressions with
+  unambiguous expected outcomes may stay with the fix author or root. Critical
+  scenarios (financial, recovery, order-state, authority, or expectations
+  needing independent justification) require an independent strong test
+  orchestrator and separate test-author children.
 - **Critical changes follow the canonical
   [review matrix](skills/blazing-market/references/delegation-and-review.md#critical-review-matrix).**
   Actual network H0/H1 changes require three independent computation/memory,
   network latency and transport reviews. Pure C/D networking selects expertise
   by concrete risk after bounded inspection establishes no hot-path effect;
   selected strict offline finance retains its latency and quant pair.
+- **Integer-division audit on hot/strict compute paths.** Inspect every
+  unproved runtime `/` and `%` on touched hot or strict financial cores,
+  preferring compile-time evaluation, cross-multiplication, or cold-prepared
+  invariant divisors (`FastDivisor`) outside fixed power-of-2/10 scales.
 - **Material questions return to the user through root.** Changed behavior or
   failure policy is settled before dependent work. An unchanged agreed plan and
   active execution permission need no renewed approval.

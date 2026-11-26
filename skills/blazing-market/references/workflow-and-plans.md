@@ -12,17 +12,35 @@
 
 - **S (small):** direct bounded source inspection, authorized edit if requested,
   compact report. No plan files or agent cascade by default.
-- **M (moderate):** in-chat plan and targeted owner/caller closure.
+- **M (moderate):** in-chat plan and targeted owner/caller closure; compact
+  1-2 module/crate scopes stay direct-first in the primary agent with inline
+  early simplicity.
 - **H (high):** settle behavior and failure policy before dependent changes,
-  use independent fresh-context plan review when available and agreement for
-  non-trivial full-cascade work. A small diff can still be high-risk if it
-  affects hot path, serialized contracts, recovery, safety or live orders.
-- For a fresh plan review, send the independent reviewer the **complete exact
-  current plan snapshot**, applicable rules and bounded source anchors, without
-  writer rationale, conversation history or previous reviews. Require an
-  independent paraphrase and source-grounded findings. Compare the inspected
-  revision before user agreement; material changes require renewed review.
-  See [delegation-and-review.md](delegation-and-review.md).
+  use at most one independent fresh-context plan review pass when available and
+  agreement for non-trivial full-cascade work. A small diff can still be
+  high-risk if it affects hot path, serialized contracts, recovery, safety or
+  live orders.
+- Cap fresh plan review at **at most 1 pass** on Risk H / multi-subsystem
+  cascades: send the independent reviewer the **complete exact current plan
+  snapshot**, applicable rules and bounded source anchors, without writer
+  rationale, conversation history or previous reviews. Require an independent
+  paraphrase and source-grounded findings, then integrate routine findings
+  directly in the primary agent without `v2`/`v3`/`v4` re-review loops (renew
+  review only if a user decision fundamentally replaces core architecture,
+  ownership, or safety model). See
+  [delegation-and-review.md](delegation-and-review.md).
+- **Grill-me on non-trivial plans (Risk M/H):** before locking a non-trivial
+  plan, proactively interview the user down each unresolved branch of the design
+  tree (behavior, ownership, contract boundaries, failure recovery, trade-offs)
+  with a concrete code-grounded recommendation for each choice; resolve routine
+  facts from source code first and skip ceremony on simple Risk S tasks.
+- **Boost on contested decisions:** whenever a non-trivial disagreement arises
+  (with the user, between parallel workers, or between reviewers), isolate that
+  contested node for evidence-backed resolution: compare competing hypotheses
+  against direct source, codegen/ASM, or authorized measurement evidence, bring
+  in an optional independent strong challenger when stakes warrant it, and
+  present an explicit trade-off verdict before committing. Never add boost
+  overhead to straightforward undisputed choices.
 - Keep an ordinary plan in chat. Persist a plan only when explicitly requested
   or cross-session continuation actually needs it. A plan is a specification,
   not permission or verified evidence.
@@ -44,10 +62,13 @@
    reversible edits do not by themselves require new tests. Test observable
    outcomes or meaningful failure cases rather than merely restating implementation
    details; avoid tests for prose, per-method quotas or APIs solely for test convenience.
-   Production agents never create or change tests; justified test work belongs
-   to separate test-author children of a strong test orchestrator. Use
-   [test orchestration and authorship](delegation-and-review.md#test-orchestration-and-authorship)
-   for ownership, independent expected results, failure triage and snapshots.
+   Scale test authorship to risk: localized mechanical test/fixture repairs
+   preserving scenarios/assertions and ordinary local regressions with
+   unambiguous expected outcomes may be completed by the fix author or primary
+   integrator; critical scenarios (financial, recovery, order-state, authority,
+   or expectations needing independent justification) require an independent
+   `TEST_ORCHESTRATOR -> TEST_AUTHOR` subtree under
+   [test orchestration and authorship](delegation-and-review.md#test-orchestration-and-authorship).
 5. Inspect integration and report implementation separately from tests that
    did or did not run. Do not recreate a failing test history by destroying an
    already suitable implementation; TDD is optional unless requested.

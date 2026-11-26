@@ -29,6 +29,12 @@ remaining H1 retains its boundedness, lifetime and ownership class contract.
   in the strict trading/financial core. Use declared integer-scaled or
   fixed-point arithmetic with checked overflow and rounding. Keep diagnostic
   floating-point or independent oracles outside that core.
+- No unproved runtime integer division (`/` or `%`) in the strict hot or
+  computational core (`constexpr` alone does not prove compile-time evaluation).
+  Fixed power-of-two and power-of-ten scales are acceptable; otherwise use
+  compile-time evaluation, overflow-safe cross-multiplication for comparisons,
+  or cold-prepared invariant divisors (e.g. Granlund–Montgomery / `FastDivisor`),
+  preserving sign, rounding, and overflow refusal.
 - No unnecessary syscalls, copies, clock captures, scheduler interactions or
   per-message diagnostics before a required terminal socket/TLS write. The
   actual nonblocking receive/write I/O remains necessary; this profile does
@@ -74,8 +80,9 @@ the strict computational core.
 ## Strict veto and proof
 
 For an actual change covered by the selected strict scope, block concrete allocation,
-blocking, floating-point, unbounded parse/work, hidden compatibility fallback,
-silent stale/gap recovery, wrong-order publication, or data-lifetime violations.
+blocking, floating-point, unproved runtime integer division (`/` or `%`),
+unbounded parse/work, hidden compatibility fallback, silent stale/gap recovery,
+wrong-order publication, or data-lifetime violations.
 For existing heap, floating-point or virtual-dispatch violations, report the
 exact divergence and its impact on the task. Do not silently expand the task
 into arithmetic, API or architecture changes to repair pre-existing violations;

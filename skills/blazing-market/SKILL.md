@@ -21,7 +21,12 @@ fills gaps. Do not report an overridden stage as incomplete.
 2. Discover relevant files and registrations before opening broad source trees.
    Search within the owning module, inspect declarations, callers, consumers,
    analogous implementations, and affected build or runtime registrations.
-   Missing search results from incomplete tooling are not proof of absence.
+   Prefer indexed/symbol search or single-call whole-file reads over repeated
+   chunked shell slicing (`sed`/`head`/`nl`) or unchanged re-reads. On unfamiliar
+   multi-file surfaces, optionally dispatch a fast read-only `context_scout`
+   (2–4 turns) to return a compact Scope Map (exact paths, lines, symbol spans,
+   and callers) with zero design conclusions. Missing search results from
+   incomplete tooling are not proof of absence.
 3. Read only the references relevant to the task; do not load the entire bundle
    merely because the task mentions performance or agents:
 
@@ -68,7 +73,7 @@ fills gaps. Do not report an overridden stage as incomplete.
    checks/work while preserving necessary correctness guarantees.
    During research, design and authorized implementation of a touched hot or
    computational path, consider
-   [computation ahead of the event, specialization and useful inlining](references/hot-cold-paths.md#computation-ahead-of-the-event-and-specialization),
+   [computation ahead of the event, specialization and integer-division elimination](references/hot-cold-paths.md#computation-ahead-of-the-event-and-specialization),
    including preparation in C and available existing machine-code evidence.
 5. **Apply the selected constraint profile.** Bounded ownership, semantic
    correctness and truthful evidence always apply. The
@@ -87,29 +92,48 @@ fills gaps. Do not report an overridden stage as incomplete.
    Use strong solution and independent review owners where useful, within the
    host's [native coordination contract](references/delegation-and-review.md#native-coordination-and-strong-branch-owners).
 7. **Check and report honestly.** Preserve required tests and contracts; prefer
-   sufficient existing verification. Production implementation agents never
-   create or change tests. When test work is justified, assign it through a
-   strong test orchestrator to separate test-author children under the
-   [test ownership contract](references/delegation-and-review.md#test-orchestration-and-authorship).
-   Request a focused regression for a concrete uncovered defect or substantial
-   behavioral risk under
-   [workflow-and-plans.md](references/workflow-and-plans.md), which owns test
-   necessity, verification scope and stopping rules. Separate static, schema, build,
-   targeted-test, runtime, performance and live evidence. A source-level
-   optimization is a `candidate` until comparable before/after measurements
-   prove a result. Report blockers and unrun verification distinctly.
+   sufficient existing verification. Scale test ownership to risk under the
+   [test ownership contract](references/delegation-and-review.md#test-orchestration-and-authorship):
+   the fix author or primary integrator may make localized mechanical test/fixture
+   repairs (preserving scenarios and assertions) and write ordinary local
+   regressions with unambiguous expected outcomes; critical scenarios (financial,
+   recovery, order-state, authority, or expectations needing independent
+   justification) require an independent `TEST_ORCHESTRATOR -> TEST_AUTHOR`
+   subtree separate from production authorship and final reviewers. Request a
+   focused regression for a concrete uncovered defect or substantial behavioral
+   risk under [workflow-and-plans.md](references/workflow-and-plans.md), which
+   owns test necessity, verification scope and stopping rules. Separate static,
+   schema, build, targeted-test, runtime, performance and live evidence. A
+   source-level optimization is a `candidate` until comparable before/after
+   measurements prove a result. Report blockers and unrun verification distinctly.
 
 ## Review gates and decisions
 
-- For substantive code tasks, require early and final independent simplicity
-  review when agents are available. Select critical reviewers from the
-  [canonical review matrix](references/delegation-and-review.md#critical-review-matrix),
+- Handle **Risk S** and compact **1-2 module/crate Risk M** discovery, planning,
+  and inline early simplicity/[minimum-checks](references/architecture-and-contracts.md#minimum-necessary-checks-and-repeated-work)
+  directly in the primary agent without spawning a research/design cascade.
+  Reserve a separate early independent simplicity subagent for **3+ subsystem**
+  or **Risk H** cascades; keep final independent simplicity review for
+  substantive code diffs when agents are available. Select critical reviewers
+  from the [canonical review matrix](references/delegation-and-review.md#critical-review-matrix),
   including its separate network latency and transport correctness roles.
   Review integrated code; report unavailable reviews without simulating them.
+- **Grill-me on non-trivial plans & Boost on contested decisions:** on
+  non-trivial plans (Risk M/H), proactively interview the user down each
+  unresolved design branch with code-grounded recommendations before locking the
+  plan. Whenever a non-trivial disagreement arises (with the user, between
+  workers, or between reviewers), focus evidence-backed **boost** resolution
+  strictly on that contested decision (competing hypotheses, direct source/ASM/
+  measurement proof, optional independent challenger, explicit trade-off
+  verdict). Skip both on simple undisputed decisions.
 - For risky cross-boundary design, settle behavior, failure semantics, ownership,
-  and acceptance with the user before dependent edits. For a high-risk or
-  non-trivial full-cascade plan, request a fresh independent plan review before
-  user agreement when available. A small task needs no full cascade or durable file.
+  and acceptance with the user before dependent edits. Cap fresh-context
+  independent plan review at **at most 1 pass** on Risk H / multi-subsystem
+  full-cascade plans before user agreement when available: integrate routine
+  findings directly in the primary agent without `v2`/`v3`/`v4` re-review loops
+  (a renewed pass is justified only if a user decision fundamentally replaces
+  the core architecture, ownership, or safety model). A small or compact task
+  needs no full cascade or durable file.
 - For a complex full cascade, research returns to root before a separate
   designer starts. Obtain user agreement on the ready solution before first
   implementation; an unchanged agreed plan needs no renewed approval.
